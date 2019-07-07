@@ -40,7 +40,7 @@ message SubmitTransactionRequest {
   Transaction transaction = 1;
 }
 
-service TransactionDirectory {
+service TransactionService {
   rpc GetProductList(GetProductListRequest) returns (ProductList){}
   rpc ReviewTransaction(ReviewTransactionRequest) returns (Transaction){}
   rpc SubmitTransaction(SubmitTransactionRequest) returns (Transaction){}
