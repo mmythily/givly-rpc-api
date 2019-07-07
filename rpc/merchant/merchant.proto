@@ -7,9 +7,37 @@ package merchant;
 import "google/protobuf/timestamp.proto";
 
 message Merchant {
-  string id = 1;
+  string merchantuid = 1;
+  string storeemail = 2;
+  string storename = 3;
+  string wallet = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp last_modified = 6;
+}
+
+message CreateMerchantRequest {
+  string storeemail = 1;
   string storename = 2;
   string wallet = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp last_modified = 5;
+}
+
+message UpdateMerchantRequest {
+  string merchantuid = 1;
+  string storeemail = 2;
+  string storename = 3;
+  string wallet = 4;
+}
+
+message VerifyBAccountRequest {
+  string beneficiaryuid = 1;
+}
+
+message BAccountBalanceVerified {
+  bool verified = 1;
+}
+
+service MerchantDirectory {
+  rpc CreateMerchant(CreateMerchantRequest) returns (Merchant){}
+  rpc UpdateMerchant(UpdateMerchantRequest) returns (Merchant){}
+  rpc VerifyBAccount(VerifyBAccountRequest) returns (BAccountBalanceVerified) {}
 }

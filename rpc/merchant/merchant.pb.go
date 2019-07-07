@@ -22,11 +22,12 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type Merchant struct {
-	Id                   string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Storename            string               `protobuf:"bytes,2,opt,name=storename,proto3" json:"storename,omitempty"`
-	Wallet               string               `protobuf:"bytes,3,opt,name=wallet,proto3" json:"wallet,omitempty"`
-	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	LastModified         *timestamp.Timestamp `protobuf:"bytes,5,opt,name=last_modified,json=lastModified,proto3" json:"last_modified,omitempty"`
+	Merchantuid          string               `protobuf:"bytes,1,opt,name=merchantuid,proto3" json:"merchantuid,omitempty"`
+	Storeemail           string               `protobuf:"bytes,2,opt,name=storeemail,proto3" json:"storeemail,omitempty"`
+	Storename            string               `protobuf:"bytes,3,opt,name=storename,proto3" json:"storename,omitempty"`
+	Wallet               string               `protobuf:"bytes,4,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LastModified         *timestamp.Timestamp `protobuf:"bytes,6,opt,name=last_modified,json=lastModified,proto3" json:"last_modified,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -57,9 +58,16 @@ func (m *Merchant) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Merchant proto.InternalMessageInfo
 
-func (m *Merchant) GetId() string {
+func (m *Merchant) GetMerchantuid() string {
 	if m != nil {
-		return m.Id
+		return m.Merchantuid
+	}
+	return ""
+}
+
+func (m *Merchant) GetStoreemail() string {
+	if m != nil {
+		return m.Storeemail
 	}
 	return ""
 }
@@ -92,28 +100,239 @@ func (m *Merchant) GetLastModified() *timestamp.Timestamp {
 	return nil
 }
 
+type CreateMerchantRequest struct {
+	Storeemail           string   `protobuf:"bytes,1,opt,name=storeemail,proto3" json:"storeemail,omitempty"`
+	Storename            string   `protobuf:"bytes,2,opt,name=storename,proto3" json:"storename,omitempty"`
+	Wallet               string   `protobuf:"bytes,3,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateMerchantRequest) Reset()         { *m = CreateMerchantRequest{} }
+func (m *CreateMerchantRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateMerchantRequest) ProtoMessage()    {}
+func (*CreateMerchantRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58ecbaafc626f209, []int{1}
+}
+
+func (m *CreateMerchantRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateMerchantRequest.Unmarshal(m, b)
+}
+func (m *CreateMerchantRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateMerchantRequest.Marshal(b, m, deterministic)
+}
+func (m *CreateMerchantRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateMerchantRequest.Merge(m, src)
+}
+func (m *CreateMerchantRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateMerchantRequest.Size(m)
+}
+func (m *CreateMerchantRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateMerchantRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateMerchantRequest proto.InternalMessageInfo
+
+func (m *CreateMerchantRequest) GetStoreemail() string {
+	if m != nil {
+		return m.Storeemail
+	}
+	return ""
+}
+
+func (m *CreateMerchantRequest) GetStorename() string {
+	if m != nil {
+		return m.Storename
+	}
+	return ""
+}
+
+func (m *CreateMerchantRequest) GetWallet() string {
+	if m != nil {
+		return m.Wallet
+	}
+	return ""
+}
+
+type UpdateMerchantRequest struct {
+	Merchantuid          string   `protobuf:"bytes,1,opt,name=merchantuid,proto3" json:"merchantuid,omitempty"`
+	Storeemail           string   `protobuf:"bytes,2,opt,name=storeemail,proto3" json:"storeemail,omitempty"`
+	Storename            string   `protobuf:"bytes,3,opt,name=storename,proto3" json:"storename,omitempty"`
+	Wallet               string   `protobuf:"bytes,4,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateMerchantRequest) Reset()         { *m = UpdateMerchantRequest{} }
+func (m *UpdateMerchantRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateMerchantRequest) ProtoMessage()    {}
+func (*UpdateMerchantRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58ecbaafc626f209, []int{2}
+}
+
+func (m *UpdateMerchantRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateMerchantRequest.Unmarshal(m, b)
+}
+func (m *UpdateMerchantRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateMerchantRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateMerchantRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateMerchantRequest.Merge(m, src)
+}
+func (m *UpdateMerchantRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateMerchantRequest.Size(m)
+}
+func (m *UpdateMerchantRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateMerchantRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateMerchantRequest proto.InternalMessageInfo
+
+func (m *UpdateMerchantRequest) GetMerchantuid() string {
+	if m != nil {
+		return m.Merchantuid
+	}
+	return ""
+}
+
+func (m *UpdateMerchantRequest) GetStoreemail() string {
+	if m != nil {
+		return m.Storeemail
+	}
+	return ""
+}
+
+func (m *UpdateMerchantRequest) GetStorename() string {
+	if m != nil {
+		return m.Storename
+	}
+	return ""
+}
+
+func (m *UpdateMerchantRequest) GetWallet() string {
+	if m != nil {
+		return m.Wallet
+	}
+	return ""
+}
+
+type VerifyBAccountRequest struct {
+	Beneficiaryuid       string   `protobuf:"bytes,1,opt,name=beneficiaryuid,proto3" json:"beneficiaryuid,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *VerifyBAccountRequest) Reset()         { *m = VerifyBAccountRequest{} }
+func (m *VerifyBAccountRequest) String() string { return proto.CompactTextString(m) }
+func (*VerifyBAccountRequest) ProtoMessage()    {}
+func (*VerifyBAccountRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58ecbaafc626f209, []int{3}
+}
+
+func (m *VerifyBAccountRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_VerifyBAccountRequest.Unmarshal(m, b)
+}
+func (m *VerifyBAccountRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_VerifyBAccountRequest.Marshal(b, m, deterministic)
+}
+func (m *VerifyBAccountRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VerifyBAccountRequest.Merge(m, src)
+}
+func (m *VerifyBAccountRequest) XXX_Size() int {
+	return xxx_messageInfo_VerifyBAccountRequest.Size(m)
+}
+func (m *VerifyBAccountRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_VerifyBAccountRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VerifyBAccountRequest proto.InternalMessageInfo
+
+func (m *VerifyBAccountRequest) GetBeneficiaryuid() string {
+	if m != nil {
+		return m.Beneficiaryuid
+	}
+	return ""
+}
+
+type BAccountBalanceVerified struct {
+	Verified             bool     `protobuf:"varint,1,opt,name=verified,proto3" json:"verified,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *BAccountBalanceVerified) Reset()         { *m = BAccountBalanceVerified{} }
+func (m *BAccountBalanceVerified) String() string { return proto.CompactTextString(m) }
+func (*BAccountBalanceVerified) ProtoMessage()    {}
+func (*BAccountBalanceVerified) Descriptor() ([]byte, []int) {
+	return fileDescriptor_58ecbaafc626f209, []int{4}
+}
+
+func (m *BAccountBalanceVerified) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_BAccountBalanceVerified.Unmarshal(m, b)
+}
+func (m *BAccountBalanceVerified) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_BAccountBalanceVerified.Marshal(b, m, deterministic)
+}
+func (m *BAccountBalanceVerified) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BAccountBalanceVerified.Merge(m, src)
+}
+func (m *BAccountBalanceVerified) XXX_Size() int {
+	return xxx_messageInfo_BAccountBalanceVerified.Size(m)
+}
+func (m *BAccountBalanceVerified) XXX_DiscardUnknown() {
+	xxx_messageInfo_BAccountBalanceVerified.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_BAccountBalanceVerified proto.InternalMessageInfo
+
+func (m *BAccountBalanceVerified) GetVerified() bool {
+	if m != nil {
+		return m.Verified
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*Merchant)(nil), "merchant.Merchant")
+	proto.RegisterType((*CreateMerchantRequest)(nil), "merchant.CreateMerchantRequest")
+	proto.RegisterType((*UpdateMerchantRequest)(nil), "merchant.UpdateMerchantRequest")
+	proto.RegisterType((*VerifyBAccountRequest)(nil), "merchant.VerifyBAccountRequest")
+	proto.RegisterType((*BAccountBalanceVerified)(nil), "merchant.BAccountBalanceVerified")
 }
 
 func init() { proto.RegisterFile("rpc/merchant/merchant.proto", fileDescriptor_58ecbaafc626f209) }
 
 var fileDescriptor_58ecbaafc626f209 = []byte{
-	// 242 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x90, 0xbf, 0x4f, 0xfb, 0x30,
-	0x10, 0xc5, 0x95, 0x7c, 0xbf, 0x54, 0x8d, 0xf9, 0x31, 0x78, 0x40, 0x56, 0x41, 0xa2, 0x62, 0xea,
-	0x52, 0x1b, 0xc1, 0xc4, 0x84, 0x60, 0xef, 0x52, 0x31, 0xb1, 0x54, 0x17, 0xfb, 0x9a, 0x9e, 0x64,
-	0xd7, 0x96, 0x73, 0x01, 0xf1, 0x3f, 0xf2, 0x47, 0x21, 0xd2, 0x04, 0xd8, 0xd8, 0xee, 0xbd, 0xfb,
-	0xbc, 0xd3, 0xd3, 0x89, 0x8b, 0x9c, 0xac, 0x09, 0x98, 0xed, 0x0e, 0xf6, 0xfc, 0x3d, 0xe8, 0x94,
-	0x23, 0x47, 0x39, 0x1d, 0xf5, 0xec, 0xaa, 0x89, 0xb1, 0xf1, 0x68, 0x7a, 0xbf, 0xee, 0xb6, 0x86,
-	0x29, 0x60, 0xcb, 0x10, 0xd2, 0x01, 0xbd, 0xfe, 0x28, 0xc4, 0x74, 0x35, 0xd0, 0xf2, 0x4c, 0x94,
-	0xe4, 0x54, 0x31, 0x2f, 0x16, 0xd5, 0xba, 0x24, 0x27, 0x2f, 0x45, 0xd5, 0x72, 0xcc, 0xb8, 0x87,
-	0x80, 0xaa, 0xec, 0xed, 0x1f, 0x43, 0x9e, 0x8b, 0xc9, 0x1b, 0x78, 0x8f, 0xac, 0xfe, 0xf5, 0xab,
-	0x41, 0xc9, 0x7b, 0x21, 0x6c, 0x46, 0x60, 0x74, 0x1b, 0x60, 0xf5, 0x7f, 0x5e, 0x2c, 0x8e, 0x6f,
-	0x67, 0xfa, 0x50, 0x44, 0x8f, 0x45, 0xf4, 0xf3, 0x58, 0x64, 0x5d, 0x0d, 0xf4, 0x23, 0xcb, 0x07,
-	0x71, 0xea, 0xa1, 0xe5, 0x4d, 0x88, 0x8e, 0xb6, 0x84, 0x4e, 0x1d, 0xfd, 0x99, 0x3e, 0xf9, 0x0a,
-	0xac, 0x06, 0xfe, 0xe9, 0xe6, 0x45, 0x37, 0xc4, 0xbb, 0xae, 0xd6, 0x36, 0x06, 0x93, 0xbb, 0xd0,
-	0x66, 0x08, 0x64, 0x1a, 0x7a, 0xf5, 0xef, 0xcb, 0x9c, 0xec, 0x12, 0x12, 0x99, 0xdf, 0xaf, 0xab,
-	0x27, 0xfd, 0xcd, 0xbb, 0xcf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x36, 0xbe, 0xac, 0x51, 0x51, 0x01,
-	0x00, 0x00,
+	// 419 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x53, 0x41, 0x6f, 0xd3, 0x30,
+	0x14, 0x5e, 0x36, 0xa8, 0xd2, 0x37, 0xa8, 0x84, 0xa5, 0x42, 0x14, 0x10, 0x2b, 0x39, 0xa0, 0x5d,
+	0x96, 0xa0, 0x21, 0x0e, 0x9c, 0xa6, 0x15, 0x24, 0x4e, 0xbb, 0x44, 0xb0, 0x03, 0x97, 0xc9, 0x71,
+	0x5e, 0x32, 0x4b, 0x71, 0x1c, 0x1c, 0xa7, 0x28, 0xbf, 0x82, 0x5f, 0x0c, 0x42, 0x75, 0xe3, 0x26,
+	0xad, 0x52, 0x38, 0xee, 0xe6, 0xf7, 0xfc, 0x7d, 0x5f, 0xbe, 0xf7, 0x3d, 0x07, 0x5e, 0xaa, 0x8a,
+	0x45, 0x02, 0x15, 0xbb, 0xa7, 0xa5, 0xde, 0x1e, 0xc2, 0x4a, 0x49, 0x2d, 0x89, 0x6b, 0x6b, 0xff,
+	0x2c, 0x97, 0x32, 0x2f, 0x30, 0x32, 0xfd, 0xa4, 0xc9, 0x22, 0xcd, 0x05, 0xd6, 0x9a, 0x8a, 0x6a,
+	0x03, 0x0d, 0xfe, 0x38, 0xe0, 0xde, 0x74, 0x68, 0xb2, 0x80, 0x53, 0xcb, 0x6c, 0x78, 0xea, 0x39,
+	0x0b, 0xe7, 0x7c, 0x1a, 0x0f, 0x5b, 0xe4, 0x35, 0x40, 0xad, 0xa5, 0x42, 0x14, 0x94, 0x17, 0xde,
+	0xb1, 0x01, 0x0c, 0x3a, 0xe4, 0x15, 0x4c, 0x4d, 0x55, 0x52, 0x81, 0xde, 0x89, 0xb9, 0xee, 0x1b,
+	0xe4, 0x39, 0x4c, 0x7e, 0xd2, 0xa2, 0x40, 0xed, 0x3d, 0x32, 0x57, 0x5d, 0x45, 0x3e, 0x02, 0x30,
+	0x85, 0x54, 0x63, 0x7a, 0x47, 0xb5, 0xf7, 0x78, 0xe1, 0x9c, 0x9f, 0x5e, 0xfa, 0xe1, 0xc6, 0x7a,
+	0x68, 0xad, 0x87, 0x5f, 0xad, 0xf5, 0x78, 0xda, 0xa1, 0xaf, 0x35, 0xb9, 0x82, 0xa7, 0x05, 0xad,
+	0xf5, 0x9d, 0x90, 0x29, 0xcf, 0x38, 0xa6, 0xde, 0xe4, 0xbf, 0xec, 0x27, 0x6b, 0xc2, 0x4d, 0x87,
+	0x0f, 0x04, 0xcc, 0x3f, 0x19, 0x35, 0x9b, 0x42, 0x8c, 0x3f, 0x1a, 0xac, 0xf5, 0xde, 0xa8, 0xce,
+	0xbf, 0x47, 0x3d, 0x3e, 0x3c, 0xea, 0xc9, 0x70, 0xd4, 0xe0, 0x97, 0x03, 0xf3, 0x6f, 0x55, 0x3a,
+	0xf2, 0xbd, 0x07, 0x0a, 0x3f, 0xb8, 0x82, 0xf9, 0x2d, 0x2a, 0x9e, 0xb5, 0xcb, 0x6b, 0xc6, 0x64,
+	0xd3, 0x1b, 0x7a, 0x0b, 0xb3, 0x04, 0x4b, 0xcc, 0x38, 0xe3, 0x54, 0xb5, 0xbd, 0xa7, 0xbd, 0x6e,
+	0xf0, 0x01, 0x5e, 0x58, 0xea, 0x92, 0x16, 0xb4, 0x64, 0x68, 0xf4, 0x38, 0xa6, 0xc4, 0x07, 0x77,
+	0xd5, 0x9d, 0x0d, 0xd9, 0x8d, 0xb7, 0xf5, 0xe5, 0x6f, 0x07, 0x9e, 0xd9, 0x0c, 0x3e, 0x73, 0x85,
+	0x4c, 0x4b, 0xd5, 0x92, 0x2f, 0x30, 0xdb, 0x5d, 0x07, 0x39, 0x0b, 0xb7, 0xaf, 0x7b, 0x74, 0x51,
+	0x3e, 0xe9, 0x01, 0xf6, 0x2a, 0x38, 0x5a, 0x0b, 0xed, 0xe6, 0x3c, 0x14, 0x1a, 0xdd, 0xc0, 0x01,
+	0xa1, 0x5b, 0x98, 0xed, 0xe6, 0x33, 0x14, 0x1a, 0x4d, 0xce, 0x7f, 0xd3, 0x03, 0x0e, 0x24, 0x13,
+	0x1c, 0x2d, 0xdf, 0x7d, 0x0f, 0x73, 0xae, 0xef, 0x9b, 0x24, 0x64, 0x52, 0x44, 0xaa, 0x11, 0xb5,
+	0xa2, 0x82, 0x47, 0x39, 0x5f, 0x15, 0xed, 0x85, 0xaa, 0xd8, 0x05, 0xad, 0x78, 0x34, 0xfc, 0xcb,
+	0x93, 0x89, 0x79, 0xcc, 0xef, 0xff, 0x06, 0x00, 0x00, 0xff, 0xff, 0x76, 0x15, 0x3a, 0xda, 0xfc,
+	0x03, 0x00, 0x00,
 }
