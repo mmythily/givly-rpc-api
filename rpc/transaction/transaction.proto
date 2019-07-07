@@ -1,0 +1,28 @@
+syntax="proto3";
+
+option go_package = "github.com/rumsrami/givly-rpc-api/rpc/transaction";
+
+package transaction;
+
+import "google/protobuf/timestamp.proto";
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string unit = 3;
+  float pricePerUnit = 4;
+  float price = 5;
+}
+
+message Beneficiary {
+  string id = 1;
+}
+
+message Transaction {
+  string id = 1;
+  string merchantid = 2;
+  Beneficiary beneficiary = 3;
+  repeated Product products = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp last_modified = 6;
+}

@@ -1,0 +1,15 @@
+syntax="proto3";
+
+option go_package = "github.com/rumsrami/givly-rpc-api/rpc/merchant";
+
+package merchant;
+
+import "google/protobuf/timestamp.proto";
+
+message Merchant {
+  string id = 1;
+  string storename = 2;
+  string wallet = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp last_modified = 5;
+}
