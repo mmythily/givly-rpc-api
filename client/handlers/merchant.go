@@ -31,9 +31,7 @@ func (m MerchantHandler) Route(r *mux.Router) {
 
 // handleCreateMerchant handles creating a new merchant
 func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
-	fmt.Println("hit1")
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("hitme")
 		pbRequest := &merchantPb.CreateMerchantRequest{
 			Storeemail: "",
 			Storename:  "",
@@ -44,7 +42,6 @@ func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println("hi", pbResponse)
 		response, _ := json.Marshal(pbResponse)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)

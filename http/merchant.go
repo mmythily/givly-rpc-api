@@ -1,8 +1,7 @@
-package internal
+package http
 
 import (
 	"context"
-	"fmt"
 
 	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
 	//"github.com/golang/protobuf/ptypes/timestamp"
@@ -30,8 +29,6 @@ func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.
 		Stores Merchant in db
 		Returns back the new updated merchant information
 	*/
-	fmt.Println(req)
-	fmt.Println("hi")
 	return &merchantPb.Merchant{
 		Merchantuid: "1234",
 		Storeemail:  "r@r.com",
