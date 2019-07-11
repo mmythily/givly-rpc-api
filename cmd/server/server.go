@@ -2,8 +2,11 @@ package main
 
 import (
 	"net/http"
-	"github.com/rumsrami/givly-rpc-api/internal"
+
 	"github.com/gorilla/mux"
+	"github.com/rumsrami/givly-rpc-api/internal"
+	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
+	transactionPb "github.com/rumsrami/givly-rpc-api/rpc/transaction"
 )
 
 func main() {
@@ -12,8 +15,8 @@ func main() {
 	merchantHandler := internal.NewMerchantDirectoryHandler()
 	transactionHandler := internal.NewTransactionDirectoryHandler()
 
-	r.Handle("/api/merchant", merchantHandler)
-	r.Handle("/api/transaction", transactionHandler)
+	r.PathPrefix(merchantPb.MerchantServicePathPrefix).Handler(merchantHandler)
+	r.PathPrefix(transactionPb.TransactionServicePathPrefix).Handler(transactionHandler)
 
 	http.ListenAndServe(":8080", r)
 }

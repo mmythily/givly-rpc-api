@@ -2,14 +2,17 @@ package internal
 
 import (
 	"context"
+	"fmt"
+
 	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
+	//"github.com/golang/protobuf/ptypes/timestamp"
 )
 
 // MerchantDirectory implements twirp MerchantService interface
-type MerchantDirectory struct {}
+type MerchantDirectory struct{}
 
 // NewMerchantDirectory returns a new configured MerchantDirectory
-func NewMerchantDirectory() (*MerchantDirectory) {
+func NewMerchantDirectory() *MerchantDirectory {
 	return &MerchantDirectory{}
 }
 
@@ -18,7 +21,8 @@ func NewMerchantDirectory() (*MerchantDirectory) {
 // ===================================================
 
 // CreateMerchant creates a new merchant
-func (m *MerchantDirectory) CreateMerchant(context.Context, *merchantPb.CreateMerchantRequest) (*merchantPb.Merchant, error) {
+func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.CreateMerchantRequest) (*merchantPb.Merchant, error) {
+	//var mytimestamp timestamp.Timestamp
 	/*
 		Recieves storeemail and storename
 		Checks for duplicate emails
@@ -26,11 +30,18 @@ func (m *MerchantDirectory) CreateMerchant(context.Context, *merchantPb.CreateMe
 		Stores Merchant in db
 		Returns back the new updated merchant information
 	*/
-	return nil, nil
+	fmt.Println(req)
+	fmt.Println("hi")
+	return &merchantPb.Merchant{
+		Merchantuid: "1234",
+		Storeemail:  "r@r.com",
+		Storename:   "Kleb",
+		Wallet:      "1234",
+	}, nil
 }
 
 // UpdateMerchant updates an existing merchant
-func (m *MerchantDirectory) UpdateMerchant(context.Context, *merchantPb.UpdateMerchantRequest) (*merchantPb.Merchant, error) {
+func (m *MerchantDirectory) UpdateMerchant(ctx context.Context, req *merchantPb.UpdateMerchantRequest) (*merchantPb.Merchant, error) {
 	/*
 		Recieves merchantuid, storeemail, storename, wallet
 		Saves to db only updated / provided fields
@@ -40,7 +51,7 @@ func (m *MerchantDirectory) UpdateMerchant(context.Context, *merchantPb.UpdateMe
 }
 
 // VerifyBAccount checks if the Beneficiary has balance and returns balance
-func (m *MerchantDirectory) VerifyBAccount(context.Context, *merchantPb.VerifyBAccountRequest) (*merchantPb.BAccountBalanceVerified, error){
+func (m *MerchantDirectory) VerifyBAccount(ctx context.Context, req *merchantPb.VerifyBAccountRequest) (*merchantPb.BAccountBalanceVerified, error) {
 	/*
 		Revieves beneficiaryuid
 		Hits endpoint for beneficiary wallet
