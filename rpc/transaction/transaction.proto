@@ -40,8 +40,17 @@ message SubmitTransactionRequest {
   Transaction transaction = 1;
 }
 
+message GetTransactionsByRTRequest {
+  string recipientuid = 1;
+}
+
+message TransactionsByRTResponse {
+  repeated Transaction transactionList = 1;
+}
+
 service TransactionService {
   rpc GetProductList(GetProductListRequest) returns (ProductList){}
   rpc ReviewTransaction(ReviewTransactionRequest) returns (Transaction){}
   rpc SubmitTransaction(SubmitTransactionRequest) returns (Transaction){}
+  rpc GetTransactionsByRT(GetTransactionsByRTRequest) returns (TransactionsByRTResponse){}
 }

@@ -54,3 +54,12 @@ func (t *TransactionDirectory) SubmitTransaction(ctx context.Context, req *trans
 	*/
 	return nil, nil
 }
+
+// GetTransactionsByRT gets transactions by a specific recipient
+func (t *TransactionDirectory) GetTransactionsByRT(ctx context.Context, req *transactionPb.GetTransactionsByRTRequest) (*transactionPb.TransactionsByRTResponse, error) {
+	/*
+	Gets all transactions from DB related to one recipient.
+	formats the response for client
+	*/
+	return nil, nil
+}

@@ -16,6 +16,7 @@ const (
 
 func init() {
 	// migrationPath, _ := config.GetPath("/assets/sql/migrations")
+	
 }
 
 func main() {
