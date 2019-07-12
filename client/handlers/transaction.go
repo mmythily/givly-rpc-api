@@ -13,20 +13,27 @@ import (
 // TransactionHandler handles transaction client requests
 type TransactionHandler struct {
 	Client transactionPb.TransactionService
+	Router *mux.Router
 }
 
-// NewTransactionHandler returns a transaction subrouter
-func NewTransactionHandler(addr string) TransactionHandler {
+// NewTransactionHandler returns a transaction handler
+func NewTransactionHandler(addr string, r *mux.Router) TransactionHandler {
 	transactionClient := transactionPb.NewTransactionServiceProtobufClient(addr, &http.Client{})
-
-	return TransactionHandler{
+	transactionHandler := TransactionHandler{
 		Client: transactionClient,
+		Router: r,
 	}
+	transactionHandler.route()
+	return transactionHandler
 }
 
-// Route Mounts the transaction handlers on Router
-func (t TransactionHandler) Route(r *mux.Router) {
-	r.HandleFunc("/postme", t.handleGetProductList()).Methods("POST")
+func (t TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	t.Router.ServeHTTP(w,r)
+}
+
+// route Mounts the transaction handlers on Router
+func (t TransactionHandler) route() {
+	t.Router.HandleFunc("/postme", t.handleGetProductList()).Methods("POST")
 }
 
 func (t TransactionHandler) handleGetProductList() http.HandlerFunc {

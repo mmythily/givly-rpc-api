@@ -13,24 +13,32 @@ import (
 // MerchantHandler handles merchant client requests
 type MerchantHandler struct {
 	Client merchantPb.MerchantService
+	Router *mux.Router
 }
 
-// NewMerchantHandler returns a merchant subrouter
-func NewMerchantHandler(addr string) MerchantHandler {
+// NewMerchantHandler returns a merchant handler
+func NewMerchantHandler(addr string, r *mux.Router) MerchantHandler {
 	merchantClient := merchantPb.NewMerchantServiceProtobufClient(addr, &http.Client{})
-
-	return MerchantHandler{
+	merchantHandler := MerchantHandler{
 		Client: merchantClient,
+		Router: r,
 	}
+	merchantHandler.route()
+	return merchantHandler
 }
 
-// Route Mounts the merchant handlers on Router
-func (m MerchantHandler) Route(r *mux.Router) {
-	r.HandleFunc("/postme", m.handleCreateMerchant()).Methods("POST")
+// route Mounts the merchant handlers on Router
+func (m MerchantHandler) route() {
+	m.Router.HandleFunc("/postme", m.handleCreateMerchant()).Methods("POST")
+}
+
+func (m MerchantHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	m.Router.ServeHTTP(w,r)
 }
 
 // handleCreateMerchant handles creating a new merchant
 func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
+	// Code here gets run one time when instance starts
 	return func(w http.ResponseWriter, r *http.Request) {
 		pbRequest := &merchantPb.CreateMerchantRequest{
 			Storeemail: "",

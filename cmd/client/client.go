@@ -4,15 +4,16 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/rumsrami/givly-rpc-api/client"
+	"github.com/rumsrami/givly-rpc-api/client/handlers"
 )
 
 func main() {
 	r := mux.NewRouter()
-	client := client.New("http://localhost:8080")
-	merchantRouter := r.PathPrefix("/merchant").Subrouter()
-	transactionRouter := r.PathPrefix("/transaction").Subrouter()
-	client.MerchantHandler.Route(merchantRouter)
-	client.TransactionHandler.Route(transactionRouter)
+	serviceRouter := mux.NewRouter()
+	merchantRouter := serviceRouter.PathPrefix("/merchant").Subrouter()
+	transactionRouter := serviceRouter.PathPrefix("/transaction").Subrouter()
+	
+	r.PathPrefix("/merchant/").Handler(handlers.NewMerchantHandler("http://localhost:8080", merchantRouter))
+	r.PathPrefix("/transaction/").Handler(handlers.NewTransactionHandler("http://localhost:8080", transactionRouter))
 	http.ListenAndServe(":8000", r)
 }
