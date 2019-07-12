@@ -38,7 +38,7 @@ func (t *TransactionDirectory) GetProductList(ctx context.Context, req *transact
 // ReviewTransaction validates an ongoing transaction 
 func (t *TransactionDirectory) ReviewTransaction(ctx context.Context, req *transactionPb.ReviewTransactionRequest) (*transactionPb.Transaction, error) {
 	/*
-	Hits the crypto endpoint to get beneficiary balance and calculated the sum price
+	Hits the crypto endpoint to get recipient balance and calculated the sum price
 	of all items in the transaction, if balance permits, adds a flag to the transaction and
 	returns it, otherwise returns error
 	*/

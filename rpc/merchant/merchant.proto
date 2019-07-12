@@ -28,11 +28,11 @@ message UpdateMerchantRequest {
   string wallet = 4;
 }
 
-message VerifyBAccountRequest {
-  string beneficiaryuid = 1;
+message VerifyRTAccountRequest {
+  string recipientuid = 1;
 }
 
-message BAccountBalanceVerified {
+message RTAccountBalanceVerified {
   bool verified = 1;
   float balance = 2;
 }
@@ -40,5 +40,5 @@ message BAccountBalanceVerified {
 service MerchantService {
   rpc CreateMerchant(CreateMerchantRequest) returns (Merchant){}
   rpc UpdateMerchant(UpdateMerchantRequest) returns (Merchant){}
-  rpc VerifyBAccount(VerifyBAccountRequest) returns (BAccountBalanceVerified) {}
+  rpc VerifyRTAccount(VerifyRTAccountRequest) returns (RTAccountBalanceVerified) {}
 }

@@ -27,15 +27,19 @@ func NewTransactionHandler(addr string, r *mux.Router) TransactionHandler {
 	return transactionHandler
 }
 
+// ServeHTTP implements Handler
 func (t TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.Router.ServeHTTP(w,r)
 }
 
 // route Mounts the transaction handlers on Router
 func (t TransactionHandler) route() {
-	t.Router.HandleFunc("/postme", t.handleGetProductList()).Methods("POST")
+	t.Router.HandleFunc("/productList", t.handleGetProductList()).Methods("POST")
+	t.Router.HandleFunc("/review", t.handleReviewTransaction()).Methods("POST")
+	t.Router.HandleFunc("/submit", t.handleSubmitTransaction()).Methods("POST")
 }
 
+// handleGetProductList retrieves a list of eligible products
 func (t TransactionHandler) handleGetProductList() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		pbRequest := &transactionPb.GetProductListRequest{}
@@ -46,5 +50,17 @@ func (t TransactionHandler) handleGetProductList() http.HandlerFunc {
 		response, _ := json.Marshal(pbResponse)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
+	}
+}
+
+// handleReviewTransaction checks the transaction value vs recipient balance
+func (t TransactionHandler) handleReviewTransaction() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+	}
+}
+
+// handleSubmitTransaction submits transation to blockchain endpoint
+func (t TransactionHandler) handleSubmitTransaction() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 	}
 }

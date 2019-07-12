@@ -47,12 +47,13 @@ func (m *MerchantDirectory) UpdateMerchant(ctx context.Context, req *merchantPb.
 	return nil, nil
 }
 
-// VerifyBAccount checks if the Beneficiary has balance and returns balance
-func (m *MerchantDirectory) VerifyBAccount(ctx context.Context, req *merchantPb.VerifyBAccountRequest) (*merchantPb.BAccountBalanceVerified, error) {
+// VerifyRTAccount checks if the Recipient has balance and returns balance
+func (m *MerchantDirectory) VerifyRTAccount(ctx context.Context, req *merchantPb.VerifyRTAccountRequest) (*merchantPb.RTAccountBalanceVerified, error) {
 	/*
-		Revieves beneficiaryuid
-		Hits endpoint for beneficiary wallet
-		Returns false if beneficiary doesnt exit or balance amount
+		Revieves recipientuid
+		Hits endpoint for recipient wallet
+		Returns false if recipient doesnt exit or balance amount
 	*/
 	return nil, nil
 }
+

@@ -18,6 +18,7 @@ CREATE TABLE "product" (
 CREATE TABLE "transaction" (
   "transactionuid" uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
   "merchant_id" uuid NOT NULL,
+  "recipient_id" uuid NOT NULL,
   "created_at" timestamp
 );
 

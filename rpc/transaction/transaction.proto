@@ -17,7 +17,7 @@ message Product {
 message Transaction {
   string transactionuid = 1;
   string merchantuid = 2;
-  string beneficiaryuid = 3;
+  string recipientuid = 3;
   bool reviewed = 4;
   bool submitted = 5;
   repeated Product products = 6;

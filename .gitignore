@@ -7,7 +7,7 @@ certs
 assets/env/dev.yaml
 assets/env/prod.yaml
 requirements.txt
-
+migrateDev.go
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
