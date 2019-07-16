@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/rumsrami/givly-rpc-api/client/handlers"
+	"github.com/rumsrami/givly-rpc-api/pkg/client/handlers"
 )
 
 func main() {

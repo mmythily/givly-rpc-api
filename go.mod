@@ -10,4 +10,5 @@ require (
 	github.com/jinzhu/gorm v1.9.10
 	github.com/lib/pq v1.1.1
 	github.com/twitchtv/twirp v5.7.0+incompatible
+	gopkg.in/gormigrate.v1 v1.6.0
 )

@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
+	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 )
 
 // MerchantHandler handles merchant client requests

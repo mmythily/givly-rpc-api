@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	transactionPb "github.com/rumsrami/givly-rpc-api/rpc/transaction"
+	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
 
 // TransactionHandler handles transaction client requests

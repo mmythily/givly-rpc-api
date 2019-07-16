@@ -1,6 +1,6 @@
 syntax="proto3";
 
-option go_package = "github.com/rumsrami/givly-rpc-api/rpc/transaction";
+option go_package = "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction";
 
 package transaction;
 

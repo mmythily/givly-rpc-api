@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	transactionPb "github.com/rumsrami/givly-rpc-api/rpc/transaction"
+	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
 
 // TransactionDirectory implements twirp TransactionService interface

@@ -3,7 +3,7 @@ package http
 import (
 	"context"
 
-	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
+	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	//"github.com/golang/protobuf/ptypes/timestamp"
 )
 

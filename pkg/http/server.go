@@ -3,8 +3,8 @@ package http
 import (
 	"net/http"
 	"github.com/gorilla/mux"
-	merchantPb "github.com/rumsrami/givly-rpc-api/rpc/merchant"
-	transactionPb "github.com/rumsrami/givly-rpc-api/rpc/transaction"
+	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
+	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
 
 // Server represents a twirp RPC server
