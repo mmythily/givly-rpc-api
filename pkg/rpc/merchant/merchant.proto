@@ -10,7 +10,6 @@ message Merchant {
   string merchantuid = 1;
   string storeemail = 2;
   string storename = 3;
-  string wallet = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp last_modified = 6;
 }
@@ -18,14 +17,12 @@ message Merchant {
 message CreateMerchantRequest {
   string storeemail = 1;
   string storename = 2;
-  string wallet = 3;
 }
 
 message UpdateMerchantRequest {
   string merchantuid = 1;
   string storeemail = 2;
   string storename = 3;
-  string wallet = 4;
 }
 
 message VerifyRTAccountRequest {

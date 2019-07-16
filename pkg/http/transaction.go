@@ -23,16 +23,10 @@ func (t *TransactionDirectory) GetProductList(ctx context.Context, req *transact
 	For demo purpose, hits the db directly and gets back the list of essential
 	products, it is up to the merchant to price them as he wishes
 	*/
-	product1 := &transactionPb.Product{
-		Productname: "Banana",
+	productList := &transactionPb.ProductList{
+		ProductName: []string{"Banana", "Apple",},
 	}
-	product2 := &transactionPb.Product{
-		Productname: "Apple",
-	}
-	transactionList := &transactionPb.ProductList{
-		ProductList: []*transactionPb.Product{product1, product2},
-	}
-	return transactionList, nil
+	return productList, nil
 }
 
 // ReviewTransaction validates an ongoing transaction 

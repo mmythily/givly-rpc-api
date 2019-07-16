@@ -29,7 +29,7 @@ message Transaction {
 message GetProductListRequest {}
 
 message ProductList {
-  repeated Product productList = 1;
+  repeated string productName = 1;
 }
 
 message ReviewTransactionRequest {

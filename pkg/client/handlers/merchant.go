@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	//"github.com/twitchtv/twirp"
 
 	"github.com/gorilla/mux"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
@@ -15,6 +16,25 @@ type MerchantHandler struct {
 	Client merchantPb.MerchantService
 	Router *mux.Router
 }
+
+// TwirpError defines a twirp Error
+type TwirpError struct {
+	Message string
+	Status string
+}
+
+// HandleError handles errors
+// Change this to Error Wrapper TODO
+func HandleError(err error) []byte {
+	//twirpErr := twirp.NewError()
+	newError := TwirpError{
+		Message: err.Error(),
+		// Change to twirp code TODO
+		Status: "",
+	}
+	errorToReturn, _ := json.Marshal(&newError)
+	return errorToReturn
+} 
 
 // NewMerchantHandler returns a merchant handler
 func NewMerchantHandler(addr string, r *mux.Router) MerchantHandler {
@@ -43,15 +63,19 @@ func (m MerchantHandler) route() {
 func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
 	// Code here gets run one time when instance starts
 	return func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		fmt.Println(r.FormValue("Message"))
 		pbRequest := &merchantPb.CreateMerchantRequest{
-			Storeemail: "",
+			Storeemail: "error",
 			Storename:  "",
-			Wallet:     "",
 		}
 
 		pbResponse, err := m.Client.CreateMerchant(context.Background(), pbRequest)
 		if err != nil {
-			fmt.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			// Change status to match twirp error TODO
+			w.WriteHeader(http.StatusNotFound)
+			w.Write(HandleError(err))
 		}
 		response, _ := json.Marshal(pbResponse)
 		w.Header().Set("Content-Type", "application/json")

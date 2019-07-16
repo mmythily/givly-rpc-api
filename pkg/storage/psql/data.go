@@ -11,7 +11,6 @@ type Merchant struct {
 	gorm.Model
 	StoreEmail   string `gorm:"not null;unique_index"`
 	StoreName    string `gorm:"not null"`
-	Wallet       string `gorm:"not null;unique_index"`
 	Transactions []Transaction
 }
 

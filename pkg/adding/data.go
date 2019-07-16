@@ -5,7 +5,6 @@ package adding
 type Merchant struct {
 	StoreEmail string `schema:"storeEmail"`
 	StoreName  string `schema:"storeName"`
-	Wallet     string `schema:"wallet"`
 }
 
 // Product represents one product in a transaction
@@ -14,6 +13,7 @@ type Product struct {
 	ProductName string  `schema:"productName"`
 	ProductUnit string  `schema:"productUnit"`
 	UnitPrice   float32 `schema:"unitPrice"`
+	Price       float32 `schema:"price"`
 }
 
 // Transaction represents a sale transaction

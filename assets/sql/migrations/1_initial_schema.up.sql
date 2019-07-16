@@ -4,7 +4,6 @@ CREATE TABLE "merchant" (
   "merchantuid" uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
   "storename" varchar NOT NULL,
   "storeemail" varchar UNIQUE NOT NULL,
-  "walletnumber" varchar UNIQUE NOT NULL,
   "created_at" timestamp,
   "last_modified" timestamp
 );
