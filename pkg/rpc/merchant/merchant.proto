@@ -7,35 +7,36 @@ package merchant;
 import "google/protobuf/timestamp.proto";
 
 message Merchant {
-  string merchantuid = 1;
-  string storeemail = 2;
-  string storename = 3;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp last_modified = 6;
+  // Hash of the email
+  string merchantUuid = 1;
+  // Created from crypto endpoint
+  string merchantCryptoId = 2;
+  // Entered on signup
+  string storeEmail = 3;
+  // Entered on signup
+  string storeName = 4;
+  // Created on Merchant creation
+  google.protobuf.Timestamp createdAt = 5;
 }
 
-message CreateMerchantRequest {
-  string storeemail = 1;
-  string storename = 2;
+message CreateMerchantReq {
+  // Entered on signup
+  string storeEmail = 1;
+  // Entered on signup
+  string storeName = 2;
 }
 
-message UpdateMerchantRequest {
-  string merchantuid = 1;
-  string storeemail = 2;
-  string storename = 3;
+message RecipientBalanceReq {
+  // Recieved from crypto endpoint
+  string recipientCryptoId = 1;
 }
 
-message VerifyRTAccountRequest {
-  string recipientuid = 1;
-}
-
-message RTAccountBalanceVerified {
-  bool verified = 1;
-  float balance = 2;
+message RecipientBalance {
+  // Balance of the recipient
+  float balance = 1;
 }
 
 service MerchantService {
-  rpc CreateMerchant(CreateMerchantRequest) returns (Merchant){}
-  rpc UpdateMerchant(UpdateMerchantRequest) returns (Merchant){}
-  rpc VerifyRTAccount(VerifyRTAccountRequest) returns (RTAccountBalanceVerified) {}
+  rpc CreateMerchant(CreateMerchantReq) returns (Merchant){}
+  rpc GetRecipientBalance(RecipientBalanceReq) returns (RecipientBalance) {}
 }

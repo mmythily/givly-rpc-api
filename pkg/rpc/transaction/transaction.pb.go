@@ -21,12 +21,113 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+// Represents an available item for sale
+type SaleItem struct {
+	// Created on item creation
+	ItemUuid string `protobuf:"bytes,1,opt,name=itemUuid,proto3" json:"itemUuid,omitempty"`
+	// Name
+	ItemName string `protobuf:"bytes,2,opt,name=itemName,proto3" json:"itemName,omitempty"`
+	// Thumbnail URL
+	ItemThumb            string   `protobuf:"bytes,3,opt,name=itemThumb,proto3" json:"itemThumb,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SaleItem) Reset()         { *m = SaleItem{} }
+func (m *SaleItem) String() string { return proto.CompactTextString(m) }
+func (*SaleItem) ProtoMessage()    {}
+func (*SaleItem) Descriptor() ([]byte, []int) {
+	return fileDescriptor_57cda61f2b487be3, []int{0}
+}
+
+func (m *SaleItem) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SaleItem.Unmarshal(m, b)
+}
+func (m *SaleItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SaleItem.Marshal(b, m, deterministic)
+}
+func (m *SaleItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SaleItem.Merge(m, src)
+}
+func (m *SaleItem) XXX_Size() int {
+	return xxx_messageInfo_SaleItem.Size(m)
+}
+func (m *SaleItem) XXX_DiscardUnknown() {
+	xxx_messageInfo_SaleItem.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SaleItem proto.InternalMessageInfo
+
+func (m *SaleItem) GetItemUuid() string {
+	if m != nil {
+		return m.ItemUuid
+	}
+	return ""
+}
+
+func (m *SaleItem) GetItemName() string {
+	if m != nil {
+		return m.ItemName
+	}
+	return ""
+}
+
+func (m *SaleItem) GetItemThumb() string {
+	if m != nil {
+		return m.ItemThumb
+	}
+	return ""
+}
+
+// Represents a list of items for sale
+type ItemList struct {
+	SaleItems            []*SaleItem `protobuf:"bytes,1,rep,name=saleItems,proto3" json:"saleItems,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
+}
+
+func (m *ItemList) Reset()         { *m = ItemList{} }
+func (m *ItemList) String() string { return proto.CompactTextString(m) }
+func (*ItemList) ProtoMessage()    {}
+func (*ItemList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_57cda61f2b487be3, []int{1}
+}
+
+func (m *ItemList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ItemList.Unmarshal(m, b)
+}
+func (m *ItemList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ItemList.Marshal(b, m, deterministic)
+}
+func (m *ItemList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ItemList.Merge(m, src)
+}
+func (m *ItemList) XXX_Size() int {
+	return xxx_messageInfo_ItemList.Size(m)
+}
+func (m *ItemList) XXX_DiscardUnknown() {
+	xxx_messageInfo_ItemList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ItemList proto.InternalMessageInfo
+
+func (m *ItemList) GetSaleItems() []*SaleItem {
+	if m != nil {
+		return m.SaleItems
+	}
+	return nil
+}
+
+// Represents a product in Transaction Products
 type Product struct {
-	Productuid           string   `protobuf:"bytes,1,opt,name=productuid,proto3" json:"productuid,omitempty"`
-	Productname          string   `protobuf:"bytes,2,opt,name=productname,proto3" json:"productname,omitempty"`
-	Unit                 string   `protobuf:"bytes,3,opt,name=unit,proto3" json:"unit,omitempty"`
-	PricePerUnit         float32  `protobuf:"fixed32,4,opt,name=pricePerUnit,proto3" json:"pricePerUnit,omitempty"`
-	Price                float32  `protobuf:"fixed32,5,opt,name=price,proto3" json:"price,omitempty"`
+	// Created on creation of Transaction
+	ProductUuid string `protobuf:"bytes,1,opt,name=productUuid,proto3" json:"productUuid,omitempty"`
+	// Created on creation of Transaction
+	ProductName string `protobuf:"bytes,2,opt,name=productName,proto3" json:"productName,omitempty"`
+	// Obtained from frontend on submitting a transaction
+	Price                float32  `protobuf:"fixed32,3,opt,name=price,proto3" json:"price,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -36,7 +137,7 @@ func (m *Product) Reset()         { *m = Product{} }
 func (m *Product) String() string { return proto.CompactTextString(m) }
 func (*Product) ProtoMessage()    {}
 func (*Product) Descriptor() ([]byte, []int) {
-	return fileDescriptor_57cda61f2b487be3, []int{0}
+	return fileDescriptor_57cda61f2b487be3, []int{2}
 }
 
 func (m *Product) XXX_Unmarshal(b []byte) error {
@@ -57,32 +158,18 @@ func (m *Product) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Product proto.InternalMessageInfo
 
-func (m *Product) GetProductuid() string {
+func (m *Product) GetProductUuid() string {
 	if m != nil {
-		return m.Productuid
+		return m.ProductUuid
 	}
 	return ""
 }
 
-func (m *Product) GetProductname() string {
+func (m *Product) GetProductName() string {
 	if m != nil {
-		return m.Productname
+		return m.ProductName
 	}
 	return ""
-}
-
-func (m *Product) GetUnit() string {
-	if m != nil {
-		return m.Unit
-	}
-	return ""
-}
-
-func (m *Product) GetPricePerUnit() float32 {
-	if m != nil {
-		return m.PricePerUnit
-	}
-	return 0
 }
 
 func (m *Product) GetPrice() float32 {
@@ -92,16 +179,18 @@ func (m *Product) GetPrice() float32 {
 	return 0
 }
 
+// Represents one Transaction
 type Transaction struct {
-	Transactionuid       string               `protobuf:"bytes,1,opt,name=transactionuid,proto3" json:"transactionuid,omitempty"`
-	Merchantuid          string               `protobuf:"bytes,2,opt,name=merchantuid,proto3" json:"merchantuid,omitempty"`
-	Recipientuid         string               `protobuf:"bytes,3,opt,name=recipientuid,proto3" json:"recipientuid,omitempty"`
-	Reviewed             bool                 `protobuf:"varint,4,opt,name=reviewed,proto3" json:"reviewed,omitempty"`
-	Submitted            bool                 `protobuf:"varint,5,opt,name=submitted,proto3" json:"submitted,omitempty"`
-	Products             []*Product           `protobuf:"bytes,6,rep,name=products,proto3" json:"products,omitempty"`
-	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ReviewedAt           *timestamp.Timestamp `protobuf:"bytes,8,opt,name=reviewed_at,json=reviewedAt,proto3" json:"reviewed_at,omitempty"`
-	SubmittedAt          *timestamp.Timestamp `protobuf:"bytes,9,opt,name=submitted_at,json=submittedAt,proto3" json:"submitted_at,omitempty"`
+	// Created on Transaction Submission
+	TransactionUuid string `protobuf:"bytes,1,opt,name=transactionUuid,proto3" json:"transactionUuid,omitempty"`
+	// Obtained from frontend maps to a cryptoID in DB
+	MerchantUuid string `protobuf:"bytes,2,opt,name=merchantUuid,proto3" json:"merchantUuid,omitempty"`
+	// Obtained from frontend - created by crypto endpoint
+	RecipientCryptoId string `protobuf:"bytes,3,opt,name=recipientCryptoId,proto3" json:"recipientCryptoId,omitempty"`
+	// List of products in transaction
+	Products []*Product `protobuf:"bytes,4,rep,name=products,proto3" json:"products,omitempty"`
+	// Time of transaction creating
+	CreatedAt            *timestamp.Timestamp `protobuf:"bytes,5,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -111,7 +200,7 @@ func (m *Transaction) Reset()         { *m = Transaction{} }
 func (m *Transaction) String() string { return proto.CompactTextString(m) }
 func (*Transaction) ProtoMessage()    {}
 func (*Transaction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_57cda61f2b487be3, []int{1}
+	return fileDescriptor_57cda61f2b487be3, []int{3}
 }
 
 func (m *Transaction) XXX_Unmarshal(b []byte) error {
@@ -132,39 +221,25 @@ func (m *Transaction) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Transaction proto.InternalMessageInfo
 
-func (m *Transaction) GetTransactionuid() string {
+func (m *Transaction) GetTransactionUuid() string {
 	if m != nil {
-		return m.Transactionuid
+		return m.TransactionUuid
 	}
 	return ""
 }
 
-func (m *Transaction) GetMerchantuid() string {
+func (m *Transaction) GetMerchantUuid() string {
 	if m != nil {
-		return m.Merchantuid
+		return m.MerchantUuid
 	}
 	return ""
 }
 
-func (m *Transaction) GetRecipientuid() string {
+func (m *Transaction) GetRecipientCryptoId() string {
 	if m != nil {
-		return m.Recipientuid
+		return m.RecipientCryptoId
 	}
 	return ""
-}
-
-func (m *Transaction) GetReviewed() bool {
-	if m != nil {
-		return m.Reviewed
-	}
-	return false
-}
-
-func (m *Transaction) GetSubmitted() bool {
-	if m != nil {
-		return m.Submitted
-	}
-	return false
 }
 
 func (m *Transaction) GetProducts() []*Product {
@@ -181,240 +256,197 @@ func (m *Transaction) GetCreatedAt() *timestamp.Timestamp {
 	return nil
 }
 
-func (m *Transaction) GetReviewedAt() *timestamp.Timestamp {
-	if m != nil {
-		return m.ReviewedAt
-	}
-	return nil
-}
-
-func (m *Transaction) GetSubmittedAt() *timestamp.Timestamp {
-	if m != nil {
-		return m.SubmittedAt
-	}
-	return nil
-}
-
-type GetProductListRequest struct {
+// Gets a list of available items for sale
+// Returns an ItemList
+type ItemListReq struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetProductListRequest) Reset()         { *m = GetProductListRequest{} }
-func (m *GetProductListRequest) String() string { return proto.CompactTextString(m) }
-func (*GetProductListRequest) ProtoMessage()    {}
-func (*GetProductListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_57cda61f2b487be3, []int{2}
-}
-
-func (m *GetProductListRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetProductListRequest.Unmarshal(m, b)
-}
-func (m *GetProductListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetProductListRequest.Marshal(b, m, deterministic)
-}
-func (m *GetProductListRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetProductListRequest.Merge(m, src)
-}
-func (m *GetProductListRequest) XXX_Size() int {
-	return xxx_messageInfo_GetProductListRequest.Size(m)
-}
-func (m *GetProductListRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetProductListRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetProductListRequest proto.InternalMessageInfo
-
-type ProductList struct {
-	ProductName          []string `protobuf:"bytes,1,rep,name=productName,proto3" json:"productName,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *ProductList) Reset()         { *m = ProductList{} }
-func (m *ProductList) String() string { return proto.CompactTextString(m) }
-func (*ProductList) ProtoMessage()    {}
-func (*ProductList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_57cda61f2b487be3, []int{3}
-}
-
-func (m *ProductList) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ProductList.Unmarshal(m, b)
-}
-func (m *ProductList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ProductList.Marshal(b, m, deterministic)
-}
-func (m *ProductList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProductList.Merge(m, src)
-}
-func (m *ProductList) XXX_Size() int {
-	return xxx_messageInfo_ProductList.Size(m)
-}
-func (m *ProductList) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProductList.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ProductList proto.InternalMessageInfo
-
-func (m *ProductList) GetProductName() []string {
-	if m != nil {
-		return m.ProductName
-	}
-	return nil
-}
-
-type ReviewTransactionRequest struct {
-	Transaction          *Transaction `protobuf:"bytes,1,opt,name=transaction,proto3" json:"transaction,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *ReviewTransactionRequest) Reset()         { *m = ReviewTransactionRequest{} }
-func (m *ReviewTransactionRequest) String() string { return proto.CompactTextString(m) }
-func (*ReviewTransactionRequest) ProtoMessage()    {}
-func (*ReviewTransactionRequest) Descriptor() ([]byte, []int) {
+func (m *ItemListReq) Reset()         { *m = ItemListReq{} }
+func (m *ItemListReq) String() string { return proto.CompactTextString(m) }
+func (*ItemListReq) ProtoMessage()    {}
+func (*ItemListReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_57cda61f2b487be3, []int{4}
 }
 
-func (m *ReviewTransactionRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReviewTransactionRequest.Unmarshal(m, b)
+func (m *ItemListReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ItemListReq.Unmarshal(m, b)
 }
-func (m *ReviewTransactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReviewTransactionRequest.Marshal(b, m, deterministic)
+func (m *ItemListReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ItemListReq.Marshal(b, m, deterministic)
 }
-func (m *ReviewTransactionRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReviewTransactionRequest.Merge(m, src)
+func (m *ItemListReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ItemListReq.Merge(m, src)
 }
-func (m *ReviewTransactionRequest) XXX_Size() int {
-	return xxx_messageInfo_ReviewTransactionRequest.Size(m)
+func (m *ItemListReq) XXX_Size() int {
+	return xxx_messageInfo_ItemListReq.Size(m)
 }
-func (m *ReviewTransactionRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReviewTransactionRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_ReviewTransactionRequest proto.InternalMessageInfo
-
-func (m *ReviewTransactionRequest) GetTransaction() *Transaction {
-	if m != nil {
-		return m.Transaction
-	}
-	return nil
+func (m *ItemListReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_ItemListReq.DiscardUnknown(m)
 }
 
-type SubmitTransactionRequest struct {
+var xxx_messageInfo_ItemListReq proto.InternalMessageInfo
+
+// Submits a transaction
+// Returns a transaction with ID
+type SubmitTxReq struct {
 	Transaction          *Transaction `protobuf:"bytes,1,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *SubmitTransactionRequest) Reset()         { *m = SubmitTransactionRequest{} }
-func (m *SubmitTransactionRequest) String() string { return proto.CompactTextString(m) }
-func (*SubmitTransactionRequest) ProtoMessage()    {}
-func (*SubmitTransactionRequest) Descriptor() ([]byte, []int) {
+func (m *SubmitTxReq) Reset()         { *m = SubmitTxReq{} }
+func (m *SubmitTxReq) String() string { return proto.CompactTextString(m) }
+func (*SubmitTxReq) ProtoMessage()    {}
+func (*SubmitTxReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_57cda61f2b487be3, []int{5}
 }
 
-func (m *SubmitTransactionRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SubmitTransactionRequest.Unmarshal(m, b)
+func (m *SubmitTxReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SubmitTxReq.Unmarshal(m, b)
 }
-func (m *SubmitTransactionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SubmitTransactionRequest.Marshal(b, m, deterministic)
+func (m *SubmitTxReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SubmitTxReq.Marshal(b, m, deterministic)
 }
-func (m *SubmitTransactionRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SubmitTransactionRequest.Merge(m, src)
+func (m *SubmitTxReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SubmitTxReq.Merge(m, src)
 }
-func (m *SubmitTransactionRequest) XXX_Size() int {
-	return xxx_messageInfo_SubmitTransactionRequest.Size(m)
+func (m *SubmitTxReq) XXX_Size() int {
+	return xxx_messageInfo_SubmitTxReq.Size(m)
 }
-func (m *SubmitTransactionRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_SubmitTransactionRequest.DiscardUnknown(m)
+func (m *SubmitTxReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_SubmitTxReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_SubmitTransactionRequest proto.InternalMessageInfo
+var xxx_messageInfo_SubmitTxReq proto.InternalMessageInfo
 
-func (m *SubmitTransactionRequest) GetTransaction() *Transaction {
+func (m *SubmitTxReq) GetTransaction() *Transaction {
 	if m != nil {
 		return m.Transaction
 	}
 	return nil
 }
 
-type GetTransactionsByRTRequest struct {
-	Recipientuid         string   `protobuf:"bytes,1,opt,name=recipientuid,proto3" json:"recipientuid,omitempty"`
+// Gets Transactions by Recipient CryptoId
+// Returns a list of Transactions
+type TxByRecipientReq struct {
+	RecipientCryptoId    string   `protobuf:"bytes,1,opt,name=recipientCryptoId,proto3" json:"recipientCryptoId,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetTransactionsByRTRequest) Reset()         { *m = GetTransactionsByRTRequest{} }
-func (m *GetTransactionsByRTRequest) String() string { return proto.CompactTextString(m) }
-func (*GetTransactionsByRTRequest) ProtoMessage()    {}
-func (*GetTransactionsByRTRequest) Descriptor() ([]byte, []int) {
+func (m *TxByRecipientReq) Reset()         { *m = TxByRecipientReq{} }
+func (m *TxByRecipientReq) String() string { return proto.CompactTextString(m) }
+func (*TxByRecipientReq) ProtoMessage()    {}
+func (*TxByRecipientReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_57cda61f2b487be3, []int{6}
 }
 
-func (m *GetTransactionsByRTRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetTransactionsByRTRequest.Unmarshal(m, b)
+func (m *TxByRecipientReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TxByRecipientReq.Unmarshal(m, b)
 }
-func (m *GetTransactionsByRTRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetTransactionsByRTRequest.Marshal(b, m, deterministic)
+func (m *TxByRecipientReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TxByRecipientReq.Marshal(b, m, deterministic)
 }
-func (m *GetTransactionsByRTRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetTransactionsByRTRequest.Merge(m, src)
+func (m *TxByRecipientReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TxByRecipientReq.Merge(m, src)
 }
-func (m *GetTransactionsByRTRequest) XXX_Size() int {
-	return xxx_messageInfo_GetTransactionsByRTRequest.Size(m)
+func (m *TxByRecipientReq) XXX_Size() int {
+	return xxx_messageInfo_TxByRecipientReq.Size(m)
 }
-func (m *GetTransactionsByRTRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetTransactionsByRTRequest.DiscardUnknown(m)
+func (m *TxByRecipientReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_TxByRecipientReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetTransactionsByRTRequest proto.InternalMessageInfo
+var xxx_messageInfo_TxByRecipientReq proto.InternalMessageInfo
 
-func (m *GetTransactionsByRTRequest) GetRecipientuid() string {
+func (m *TxByRecipientReq) GetRecipientCryptoId() string {
 	if m != nil {
-		return m.Recipientuid
+		return m.RecipientCryptoId
 	}
 	return ""
 }
 
-type TransactionsByRTResponse struct {
+// Gets Transactions by Merchant Uuid
+// Returns a list of Transactions
+type TxByMerchantReq struct {
+	MerchantUuid         string   `protobuf:"bytes,1,opt,name=merchantUuid,proto3" json:"merchantUuid,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *TxByMerchantReq) Reset()         { *m = TxByMerchantReq{} }
+func (m *TxByMerchantReq) String() string { return proto.CompactTextString(m) }
+func (*TxByMerchantReq) ProtoMessage()    {}
+func (*TxByMerchantReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_57cda61f2b487be3, []int{7}
+}
+
+func (m *TxByMerchantReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TxByMerchantReq.Unmarshal(m, b)
+}
+func (m *TxByMerchantReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TxByMerchantReq.Marshal(b, m, deterministic)
+}
+func (m *TxByMerchantReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TxByMerchantReq.Merge(m, src)
+}
+func (m *TxByMerchantReq) XXX_Size() int {
+	return xxx_messageInfo_TxByMerchantReq.Size(m)
+}
+func (m *TxByMerchantReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_TxByMerchantReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TxByMerchantReq proto.InternalMessageInfo
+
+func (m *TxByMerchantReq) GetMerchantUuid() string {
+	if m != nil {
+		return m.MerchantUuid
+	}
+	return ""
+}
+
+// Gets List of transactions
+// Response to TxByMerchantReq and TxByRecipientReq
+type TxRes struct {
 	TransactionList      []*Transaction `protobuf:"bytes,1,rep,name=transactionList,proto3" json:"transactionList,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
 }
 
-func (m *TransactionsByRTResponse) Reset()         { *m = TransactionsByRTResponse{} }
-func (m *TransactionsByRTResponse) String() string { return proto.CompactTextString(m) }
-func (*TransactionsByRTResponse) ProtoMessage()    {}
-func (*TransactionsByRTResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_57cda61f2b487be3, []int{7}
+func (m *TxRes) Reset()         { *m = TxRes{} }
+func (m *TxRes) String() string { return proto.CompactTextString(m) }
+func (*TxRes) ProtoMessage()    {}
+func (*TxRes) Descriptor() ([]byte, []int) {
+	return fileDescriptor_57cda61f2b487be3, []int{8}
 }
 
-func (m *TransactionsByRTResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_TransactionsByRTResponse.Unmarshal(m, b)
+func (m *TxRes) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TxRes.Unmarshal(m, b)
 }
-func (m *TransactionsByRTResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_TransactionsByRTResponse.Marshal(b, m, deterministic)
+func (m *TxRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TxRes.Marshal(b, m, deterministic)
 }
-func (m *TransactionsByRTResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TransactionsByRTResponse.Merge(m, src)
+func (m *TxRes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TxRes.Merge(m, src)
 }
-func (m *TransactionsByRTResponse) XXX_Size() int {
-	return xxx_messageInfo_TransactionsByRTResponse.Size(m)
+func (m *TxRes) XXX_Size() int {
+	return xxx_messageInfo_TxRes.Size(m)
 }
-func (m *TransactionsByRTResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_TransactionsByRTResponse.DiscardUnknown(m)
+func (m *TxRes) XXX_DiscardUnknown() {
+	xxx_messageInfo_TxRes.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_TransactionsByRTResponse proto.InternalMessageInfo
+var xxx_messageInfo_TxRes proto.InternalMessageInfo
 
-func (m *TransactionsByRTResponse) GetTransactionList() []*Transaction {
+func (m *TxRes) GetTransactionList() []*Transaction {
 	if m != nil {
 		return m.TransactionList
 	}
@@ -422,14 +454,15 @@ func (m *TransactionsByRTResponse) GetTransactionList() []*Transaction {
 }
 
 func init() {
+	proto.RegisterType((*SaleItem)(nil), "transaction.SaleItem")
+	proto.RegisterType((*ItemList)(nil), "transaction.ItemList")
 	proto.RegisterType((*Product)(nil), "transaction.Product")
 	proto.RegisterType((*Transaction)(nil), "transaction.Transaction")
-	proto.RegisterType((*GetProductListRequest)(nil), "transaction.GetProductListRequest")
-	proto.RegisterType((*ProductList)(nil), "transaction.ProductList")
-	proto.RegisterType((*ReviewTransactionRequest)(nil), "transaction.ReviewTransactionRequest")
-	proto.RegisterType((*SubmitTransactionRequest)(nil), "transaction.SubmitTransactionRequest")
-	proto.RegisterType((*GetTransactionsByRTRequest)(nil), "transaction.GetTransactionsByRTRequest")
-	proto.RegisterType((*TransactionsByRTResponse)(nil), "transaction.TransactionsByRTResponse")
+	proto.RegisterType((*ItemListReq)(nil), "transaction.ItemListReq")
+	proto.RegisterType((*SubmitTxReq)(nil), "transaction.SubmitTxReq")
+	proto.RegisterType((*TxByRecipientReq)(nil), "transaction.TxByRecipientReq")
+	proto.RegisterType((*TxByMerchantReq)(nil), "transaction.TxByMerchantReq")
+	proto.RegisterType((*TxRes)(nil), "transaction.TxRes")
 }
 
 func init() {
@@ -437,41 +470,39 @@ func init() {
 }
 
 var fileDescriptor_57cda61f2b487be3 = []byte{
-	// 566 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0xad, 0x93, 0x7e, 0x24, 0xe3, 0xaa, 0x88, 0xa1, 0x08, 0xcb, 0x42, 0x60, 0x59, 0x0a, 0xe4,
-	0x52, 0x1b, 0x05, 0x21, 0x04, 0x08, 0x89, 0xe4, 0xd2, 0x0b, 0x42, 0x91, 0x1b, 0x7a, 0xe0, 0x00,
-	0x72, 0x9c, 0xc1, 0x5d, 0x51, 0x7f, 0xb0, 0x5e, 0x07, 0xf5, 0xa7, 0x70, 0xe1, 0xaf, 0x82, 0x76,
-	0xed, 0x24, 0xeb, 0x7c, 0xb4, 0x17, 0x6e, 0xbb, 0x6f, 0xdf, 0xbc, 0xbc, 0x99, 0x37, 0x31, 0xf4,
-	0xf2, 0x1f, 0xb1, 0xcf, 0xf3, 0xc8, 0x17, 0x3c, 0x4c, 0x8b, 0x30, 0x12, 0x2c, 0x4b, 0xf5, 0xb3,
-	0x97, 0xf3, 0x4c, 0x64, 0x68, 0x6a, 0x90, 0xfd, 0x34, 0xce, 0xb2, 0xf8, 0x9a, 0x7c, 0xf5, 0x34,
-	0x2d, 0xbf, 0xfb, 0x82, 0x25, 0x54, 0x88, 0x30, 0xc9, 0x2b, 0xb6, 0xfb, 0xdb, 0x80, 0xa3, 0x31,
-	0xcf, 0x66, 0x65, 0x24, 0xf0, 0x09, 0x40, 0x5e, 0x1d, 0x4b, 0x36, 0xb3, 0x0c, 0xc7, 0xe8, 0x77,
-	0x03, 0x0d, 0x41, 0x07, 0xcc, 0xfa, 0x96, 0x86, 0x09, 0x59, 0x2d, 0x45, 0xd0, 0x21, 0x44, 0xd8,
-	0x2f, 0x53, 0x26, 0xac, 0xb6, 0x7a, 0x52, 0x67, 0x74, 0xe1, 0x38, 0xe7, 0x2c, 0xa2, 0x31, 0xf1,
-	0xcf, 0xf2, 0x6d, 0xdf, 0x31, 0xfa, 0xad, 0xa0, 0x81, 0xe1, 0x29, 0x1c, 0xa8, 0xbb, 0x75, 0xa0,
-	0x1e, 0xab, 0x8b, 0xfb, 0xa7, 0x0d, 0xe6, 0x64, 0xd5, 0x0c, 0x3e, 0x83, 0x13, 0xad, 0xb7, 0x95,
-	0xc7, 0x35, 0x54, 0xfa, 0x4c, 0x88, 0x47, 0x57, 0x61, 0xaa, 0x1a, 0xa9, 0x7d, 0x6a, 0x90, 0xf4,
-	0xc4, 0x29, 0x62, 0x39, 0xa3, 0x8a, 0x52, 0xf9, 0x6d, 0x60, 0x68, 0x43, 0x87, 0xd3, 0x9c, 0xd1,
-	0x2f, 0x9a, 0x29, 0xcf, 0x9d, 0x60, 0x79, 0xc7, 0xc7, 0xd0, 0x2d, 0xca, 0x69, 0xc2, 0x84, 0xa0,
-	0x99, 0xf2, 0xdc, 0x09, 0x56, 0x00, 0xbe, 0x80, 0x4e, 0x3d, 0x94, 0xc2, 0x3a, 0x74, 0xda, 0x7d,
-	0x73, 0x70, 0xea, 0xe9, 0x39, 0xd5, 0xf3, 0x0e, 0x96, 0x2c, 0x7c, 0x03, 0x10, 0x71, 0x0a, 0x05,
-	0xcd, 0xbe, 0x85, 0xc2, 0x3a, 0x72, 0x8c, 0xbe, 0x39, 0xb0, 0xbd, 0x2a, 0x3b, 0x6f, 0x91, 0x9d,
-	0x37, 0x59, 0x64, 0x17, 0x74, 0x6b, 0xf6, 0x50, 0xe0, 0x3b, 0x30, 0x17, 0xb6, 0x64, 0x6d, 0xe7,
-	0xce, 0x5a, 0x58, 0xd0, 0x87, 0x02, 0xdf, 0xc3, 0xf1, 0xd2, 0xb6, 0xac, 0xee, 0xde, 0x59, 0x6d,
-	0x2e, 0xf9, 0x43, 0xe1, 0x3e, 0x82, 0x87, 0xe7, 0x24, 0xea, 0x76, 0x3e, 0xb2, 0x42, 0x04, 0xf4,
-	0xb3, 0xa4, 0x42, 0xb8, 0x3e, 0x98, 0x1a, 0xaa, 0x2d, 0xce, 0x27, 0xb9, 0x38, 0x86, 0xd3, 0xd6,
-	0x16, 0x47, 0x42, 0xee, 0x25, 0x58, 0x81, 0xb2, 0xa5, 0xe5, 0x5d, 0x8b, 0xe1, 0x5b, 0xd0, 0x57,
-	0x5a, 0x65, 0x6e, 0x0e, 0xac, 0xc6, 0x44, 0xf5, 0x2a, 0x9d, 0x2c, 0x75, 0x2f, 0x94, 0xe1, 0xff,
-	0xac, 0xfb, 0x01, 0xec, 0x73, 0xd2, 0x45, 0x8b, 0xd1, 0x4d, 0x30, 0x59, 0x28, 0xaf, 0xaf, 0x97,
-	0xb1, 0xb9, 0x5e, 0xee, 0x57, 0xb0, 0x36, 0xcb, 0x8b, 0x3c, 0x4b, 0x0b, 0xc2, 0x11, 0xdc, 0xd3,
-	0x7e, 0x4c, 0x8e, 0x50, 0xcd, 0xec, 0x36, 0x77, 0xeb, 0x05, 0x83, 0xbf, 0x2d, 0x40, 0x8d, 0x70,
-	0x41, 0x7c, 0xce, 0x22, 0xc2, 0x31, 0x9c, 0x34, 0x23, 0x43, 0xb7, 0xa1, 0xb9, 0x35, 0x4f, 0xdb,
-	0xda, 0xb6, 0xbf, 0x92, 0xe0, 0xee, 0xe1, 0x25, 0xdc, 0xdf, 0x88, 0x0e, 0x7b, 0x8d, 0x82, 0x5d,
-	0xd1, 0xda, 0x3b, 0xfb, 0xa9, 0x74, 0x37, 0xa2, 0x5b, 0xd3, 0xdd, 0x15, 0xed, 0xad, 0xba, 0x31,
-	0x3c, 0xd8, 0x12, 0x1d, 0x3e, 0x5f, 0x1f, 0xc3, 0x8e, 0x70, 0xed, 0xde, 0x2e, 0xed, 0x46, 0x86,
-	0xee, 0xde, 0xe8, 0xf5, 0x97, 0x57, 0x31, 0x13, 0x57, 0xe5, 0xd4, 0x8b, 0xb2, 0xc4, 0xe7, 0x65,
-	0x52, 0xf0, 0x30, 0x61, 0x7e, 0xcc, 0xe6, 0xd7, 0x37, 0x67, 0x3c, 0x8f, 0xce, 0xc2, 0x9c, 0xf9,
-	0x5b, 0xbe, 0xe9, 0xd3, 0x43, 0xf5, 0xbf, 0x7b, 0xf9, 0x2f, 0x00, 0x00, 0xff, 0xff, 0xee, 0x25,
-	0x8c, 0xda, 0xf1, 0x05, 0x00, 0x00,
+	// 537 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x94, 0xdf, 0x8f, 0xd2, 0x40,
+	0x10, 0xc7, 0x29, 0x27, 0x0a, 0x53, 0xcf, 0xd3, 0xc9, 0x5d, 0xd2, 0x34, 0x67, 0x24, 0x9b, 0x98,
+	0xf0, 0xe0, 0xb5, 0x86, 0xcb, 0x45, 0xe3, 0x8b, 0xc8, 0xc5, 0x10, 0xe2, 0x8f, 0x98, 0x52, 0x5f,
+	0x7c, 0xb2, 0x2c, 0x2b, 0x6c, 0x64, 0x69, 0x6f, 0xbb, 0xbd, 0xc0, 0xff, 0xe3, 0xbf, 0xe8, 0xfb,
+	0xa5, 0xbf, 0x60, 0x5b, 0xe0, 0x6d, 0x77, 0xe6, 0xdb, 0xd9, 0xef, 0x7c, 0x66, 0x52, 0x78, 0x1d,
+	0xfd, 0x9d, 0xbb, 0x32, 0xa2, 0xae, 0x92, 0xc1, 0x2a, 0x0e, 0xa8, 0xe2, 0xe1, 0x4a, 0x3f, 0x3b,
+	0x91, 0x0c, 0x55, 0x88, 0xa6, 0x16, 0xb2, 0x5f, 0xcd, 0xc3, 0x70, 0xbe, 0x64, 0x6e, 0x96, 0x9a,
+	0x26, 0x7f, 0x5c, 0xc5, 0x05, 0x8b, 0x55, 0x20, 0xa2, 0x5c, 0x4d, 0x7e, 0x43, 0x7b, 0x12, 0x2c,
+	0xd9, 0x58, 0x31, 0x81, 0x36, 0xb4, 0xb9, 0x62, 0xe2, 0x67, 0xc2, 0x67, 0x96, 0xd1, 0x35, 0x7a,
+	0x1d, 0x6f, 0x7b, 0x2f, 0x73, 0xdf, 0x03, 0xc1, 0xac, 0xe6, 0x2e, 0x97, 0xde, 0xf1, 0x12, 0x3a,
+	0xe9, 0xd9, 0x5f, 0x24, 0x62, 0x6a, 0x9d, 0x64, 0xc9, 0x5d, 0x80, 0x7c, 0x84, 0x76, 0x5a, 0xfd,
+	0x2b, 0x8f, 0x15, 0x5e, 0x43, 0x27, 0x2e, 0x5e, 0x8b, 0x2d, 0xa3, 0x7b, 0xd2, 0x33, 0xfb, 0x17,
+	0x8e, 0xde, 0x42, 0xe9, 0xc5, 0xdb, 0xe9, 0x08, 0x85, 0x27, 0x3f, 0x64, 0x38, 0x4b, 0xa8, 0xc2,
+	0x2e, 0x98, 0x51, 0x7e, 0xd4, 0x4c, 0xea, 0x21, 0x4d, 0xa1, 0x59, 0xd5, 0x43, 0x78, 0x0e, 0xad,
+	0x48, 0x72, 0xca, 0x32, 0xa7, 0x4d, 0x2f, 0xbf, 0x90, 0xff, 0x06, 0x98, 0xfe, 0xce, 0x08, 0xf6,
+	0xe0, 0x4c, 0xf3, 0xa5, 0xbd, 0x56, 0x0f, 0x23, 0x81, 0xa7, 0x82, 0x49, 0xba, 0x08, 0x56, 0xb9,
+	0xa9, 0xfc, 0xc9, 0x4a, 0x0c, 0xdf, 0xc0, 0x0b, 0xc9, 0x28, 0x8f, 0x38, 0x5b, 0xa9, 0x5b, 0xb9,
+	0x89, 0x54, 0x38, 0x9e, 0x15, 0xa4, 0xf6, 0x13, 0xf8, 0x16, 0xda, 0x85, 0xe1, 0xd8, 0x7a, 0x94,
+	0x41, 0x3a, 0xaf, 0x40, 0x2a, 0x68, 0x78, 0x5b, 0x15, 0xbe, 0x87, 0x0e, 0x95, 0x2c, 0x50, 0x6c,
+	0xf6, 0x49, 0x59, 0xad, 0xae, 0xd1, 0x33, 0xfb, 0xb6, 0x93, 0x8f, 0xde, 0x29, 0x47, 0xef, 0xf8,
+	0xe5, 0xe8, 0xbd, 0x9d, 0x98, 0x9c, 0x82, 0x59, 0x4e, 0xc7, 0x63, 0x77, 0x64, 0x0c, 0xe6, 0x24,
+	0x99, 0x0a, 0xae, 0xfc, 0xb5, 0xc7, 0xee, 0xf0, 0x03, 0xe8, 0xdb, 0x94, 0x11, 0x30, 0xfb, 0x56,
+	0xc5, 0x8c, 0x06, 0xcd, 0xd3, 0xc5, 0x64, 0x00, 0xcf, 0xfd, 0xf5, 0x70, 0xe3, 0x95, 0xed, 0xa5,
+	0xf5, 0x0e, 0x72, 0x30, 0x8e, 0x70, 0x20, 0x37, 0x70, 0x96, 0x56, 0xf8, 0x56, 0x90, 0x4c, 0x0b,
+	0xd4, 0x61, 0x1b, 0xfb, 0xb0, 0xc9, 0x17, 0x68, 0xa5, 0xee, 0x63, 0x1c, 0x56, 0x66, 0x98, 0xb6,
+	0x58, 0xec, 0xdc, 0xf1, 0x0e, 0xea, 0x1f, 0xf4, 0xff, 0x35, 0x01, 0x35, 0xc1, 0x84, 0xc9, 0x7b,
+	0x4e, 0x19, 0x0e, 0xc0, 0x1c, 0x31, 0xb5, 0xdd, 0xeb, 0x6a, 0x41, 0x0d, 0xa8, 0x7d, 0x71, 0x30,
+	0x43, 0x1a, 0x38, 0x80, 0x76, 0x49, 0xba, 0xf6, 0xb9, 0x36, 0x00, 0xfb, 0xa8, 0x53, 0xd2, 0xc0,
+	0xcf, 0xf0, 0x6c, 0xc4, 0xd4, 0x96, 0xaf, 0xbf, 0xc6, 0x97, 0x55, 0x75, 0x8d, 0xbe, 0x8d, 0xb5,
+	0xb4, 0xc7, 0x62, 0xd2, 0xc0, 0x5b, 0x38, 0x1d, 0x31, 0x55, 0x42, 0xf6, 0xd7, 0x78, 0xb9, 0x57,
+	0x45, 0x9b, 0xc0, 0xe1, 0x22, 0xc3, 0x77, 0xbf, 0x6e, 0xe6, 0x5c, 0x2d, 0x92, 0xa9, 0x43, 0x43,
+	0xe1, 0xca, 0x44, 0xc4, 0x32, 0x10, 0xdc, 0x9d, 0xf3, 0xfb, 0xe5, 0xe6, 0x4a, 0x46, 0xf4, 0x2a,
+	0x88, 0xb8, 0x7b, 0xe0, 0xff, 0x35, 0x7d, 0x9c, 0xad, 0xe7, 0xf5, 0x43, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0x98, 0x04, 0x01, 0x85, 0xdd, 0x04, 0x00, 0x00,
 }

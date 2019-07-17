@@ -1,43 +1,53 @@
 package listing
 
+import (
+	uuid "github.com/google/uuid"
+)
+
 // Merchant represents a member merchant
-// This is the data recived from frontend client
+// This is the data returned to the frontend client
 type Merchant struct {
-	MerchantID   string        `json:"merchantId"`
-	StoreEmail   string        `json:"storeEmail"`
-	StoreName    string        `json:"storeName"`
-	Transactions []Transaction `json:"transactions"`
+	MerchantUUID uuid.UUID `json:"merchantUuid"`
+	StoreEmail   string    `json:"storeEmail"`
+	StoreName    string    `json:"storeName"`
 }
 
 // Product represents one product in a transaction
 // This is the data recived from frontend client
 type Product struct {
-	ProductName string  `json:"productName"`
-	ProductUnit string  `json:"productUnit"`
-	UnitPrice   float32 `json:"unitPrice"`
+	ProductUUID uuid.UUID `json:"productUuid"`
+	ProductName string    `json:"productName"`
+	Price       float32   `json:"price"`
 }
 
 // Transaction represents a sale transaction
 // This is the data recived from frontend client
 type Transaction struct {
-	TransactionID string `json:"transactionId"`
-	Products    []Product `json:"products"`
-	TotalPrice  float32   `json:"totalPrice"`
-	MerchantID  string    `json:"merchantId"`
-	RecipientID string    `json:"recipientId"`
+	TransactionUUID   uuid.UUID `json:"transactionUuid"`
+	Products          []Product `json:"products"`
+	TotalPrice        float32   `json:"totalPrice"`
+	MerchantUUID      uuid.UUID `json:"merchantUuid"`
+	RecipientCryptoID string    `json:"recipientCryptoId"`
 }
 
-// ProductList represents a list of available products
-type ProductList struct {
-	ProductName string `json:"productName"`
+// Item represents an item in available Items for purchase
+type Item struct {
+	ItemUUID uuid.UUID `json:"itemUuid"`
+	ItemName string    `json:"itemName"`
+	ItemURL  string    `json:"itemUrl"`
 }
 
-// BatchProductList represents batch addition of products
-type BatchProductList struct {
-	Products []ProductList `json:"products"`
+// ItemList represents batch addition of Items
+type ItemList struct {
+	ItemList []Item `json:"itemList"`
 }
 
-// Recipient representa a beneficiary
-type Recipient struct {
-	RecipientID string `json:"recipientId"`
+// RecipientReq representa a beneficiary
+type RecipientReq struct {
+	RecipientCryptoID string `schema:"recipientCryptoId"`
+}
+
+// MerchantReq representa a merchant
+type MerchantReq struct {
+	MerchantUUID uuid.UUID `schema:"merchantUuid"`
 }

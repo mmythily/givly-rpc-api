@@ -13,10 +13,14 @@ import (
 // Service returns a pbType data Response
 // Service calles storage(db) layer with Data type entity
 type Service interface {
-	UpdateMerchant(merchantPb.UpdateMerchantRequest) (*merchantPb.Merchant, error)
-	VerifyRecipientAccount(merchantPb.VerifyRTAccountRequest) (*merchantPb.RTAccountBalanceVerified, error)
-	GetProductList(transactionPb.GetProductListRequest) (*transactionPb.ProductList, error)
-	GetTransactionsByRecipient(transactionPb.GetTransactionsByRTRequest) (*transactionPb.TransactionsByRTResponse, error)
+	// GetBalanceByCryptoId on Recipient db Model
+	GetRecipientBalance(merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error)
+	// GetItemList on the ItemList db model
+	GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error)
+	// GetTxByRecipientCryptoId
+	GetRecipientTx(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error)
+	// GetTxByMerchantUUID
+	GetMerchantTx(transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error)
 }
 
 // Repository provides access to storage layer
@@ -24,6 +28,14 @@ type Service interface {
 // These functions are needed by this listing service
 type Repository interface {
 	// Add db functions requires to fullfil the service
+	// GetRecipientBalance gets balance of recipient
+	GetBalanceByCryptoID(merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error)
+	// GetItemList gets a list of available items
+	GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error)
+	// GetTxByRecipientCryptoID
+	GetTxByRecipientCryptoID(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error)
+	// GetTxByMerchantUUID
+	GetTxByMerchantUUID(transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error)
 }
 
 // service represents a Listing service used by Server Handlers
@@ -38,18 +50,18 @@ func NewService(r Repository) Service {
 }
 
 
-func (s *service)UpdateMerchant(merchantPb.UpdateMerchantRequest) (*merchantPb.Merchant, error){
+func (s *service) GetRecipientBalance(req merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error){
 	return nil, nil
 }
 
-func (s *service)VerifyRecipientAccount(merchantPb.VerifyRTAccountRequest) (*merchantPb.RTAccountBalanceVerified, error){
+func (s *service) GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error){
 	return nil, nil
 }
 
-func (s *service)GetProductList(transactionPb.GetProductListRequest) (*transactionPb.ProductList, error){
+func (s *service)GetRecipientTx(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error){
 	return nil, nil
 }
 
-func (s *service)GetTransactionsByRecipient(transactionPb.GetTransactionsByRTRequest) (*transactionPb.TransactionsByRTResponse, error){
+func (s *service) GetMerchantTx(req transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error){
 	return nil, nil
 }

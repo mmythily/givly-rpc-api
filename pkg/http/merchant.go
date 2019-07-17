@@ -5,15 +5,22 @@ import (
 	"errors"
 
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
-	//"github.com/golang/protobuf/ptypes/timestamp"
+	"github.com/rumsrami/givly-rpc-api/pkg/adding"
+	"github.com/rumsrami/givly-rpc-api/pkg/listing"
 )
 
 // MerchantDirectory implements twirp MerchantService interface
-type MerchantDirectory struct{}
+type MerchantDirectory struct{
+	A adding.Service
+	L listing.Service
+}
 
 // NewMerchantDirectory returns a new configured MerchantDirectory
-func NewMerchantDirectory() *MerchantDirectory {
-	return &MerchantDirectory{}
+func NewMerchantDirectory(a adding.Service, l listing.Service) *MerchantDirectory {
+	return &MerchantDirectory{
+		A: a,
+		L: l,
+	}
 }
 
 // ===================================================
@@ -34,7 +41,7 @@ func NewMerchantDirectory() *MerchantDirectory {
 */
 
 // CreateMerchant creates a new merchant
-func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.CreateMerchantRequest) (*merchantPb.Merchant, error) {
+func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error) {
 	//var mytimestamp timestamp.Timestamp
 	/*
 		Recieves storeemail and storename
@@ -43,28 +50,20 @@ func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.
 		Stores Merchant in db
 		Returns back the new updated merchant information
 	*/
-	if req.Storeemail == "error" {
+
+	if req.StoreEmail == "error" {
 		return nil, errors.New("Email not found")
 	}
 	return &merchantPb.Merchant{
-		Merchantuid: "1234",
-		Storeemail:  "r@r.com",
-		Storename:   "Kleb",
+		MerchantUuid: "1234",
+		StoreEmail:  "r@r.com",
+		StoreName:   "Kleb",
 	}, nil
 }
 
-// UpdateMerchant updates an existing merchant
-func (m *MerchantDirectory) UpdateMerchant(ctx context.Context, req *merchantPb.UpdateMerchantRequest) (*merchantPb.Merchant, error) {
-	/*
-		Recieves merchantuid, storeemail, storename
-		Saves to db only updated / provided fields
-		Returns back the new updated merchant information
-	*/
-	return nil, nil
-}
 
-// VerifyRTAccount checks if the Recipient has balance and returns balance
-func (m *MerchantDirectory) VerifyRTAccount(ctx context.Context, req *merchantPb.VerifyRTAccountRequest) (*merchantPb.RTAccountBalanceVerified, error) {
+// GetRecipientBalance checks if the Recipient has balance and returns balance
+func (m *MerchantDirectory) GetRecipientBalance(ctx context.Context, req *merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error) {
 	/*
 		Revieves recipientuid
 		Hits endpoint for recipient wallet

@@ -6,51 +6,77 @@ package transaction;
 
 import "google/protobuf/timestamp.proto";
 
+// Represents an available item for sale
+message SaleItem {
+  // Created on item creation
+  string itemUuid = 1;
+  // Name
+  string itemName = 2;
+  // Thumbnail URL
+  string itemThumb = 3;
+}
+
+// Represents a list of items for sale
+message ItemList {
+  repeated SaleItem saleItems = 1;
+}
+
+// Represents a product in Transaction Products
 message Product {
-  string productuid = 1;
-  string productname = 2;
-  string unit = 3;
-  float pricePerUnit = 4;
-  float price = 5;
+  // Created on creation of Transaction
+  string productUuid = 1;
+  // Created on creation of Transaction
+  string productName = 2;
+  // Obtained from frontend on submitting a transaction
+  float price = 3;
 }
 
+// Represents one Transaction
 message Transaction {
-  string transactionuid = 1;
-  string merchantuid = 2;
-  string recipientuid = 3;
-  bool reviewed = 4;
-  bool submitted = 5;
-  repeated Product products = 6;
-  google.protobuf.Timestamp created_at = 7;
-  google.protobuf.Timestamp reviewed_at = 8;
-  google.protobuf.Timestamp submitted_at = 9;
+  // Created on Transaction Submission 
+  string transactionUuid = 1;
+  // Obtained from frontend maps to a cryptoID in DB
+  string merchantUuid = 2;
+  // Obtained from frontend - created by crypto endpoint
+  string recipientCryptoId = 3;
+  // List of products in transaction
+  repeated Product products = 4;
+  // Time of transaction creating
+  google.protobuf.Timestamp createdAt = 5;
 }
 
-message GetProductListRequest {}
+// Gets a list of available items for sale
+// Returns an ItemList
+message ItemListReq {}
 
-message ProductList {
-  repeated string productName = 1;
-}
-
-message ReviewTransactionRequest {
+// Submits a transaction
+// Returns a transaction with ID
+message SubmitTxReq {
   Transaction transaction = 1;
 }
 
-message SubmitTransactionRequest {
-  Transaction transaction = 1;
+// Gets Transactions by Recipient CryptoId
+// Returns a list of Transactions
+message TxByRecipientReq {
+  string recipientCryptoId = 1;
 }
 
-message GetTransactionsByRTRequest {
-  string recipientuid = 1;
+// Gets Transactions by Merchant Uuid
+// Returns a list of Transactions
+message TxByMerchantReq {
+  string merchantUuid = 1;
 }
 
-message TransactionsByRTResponse {
+// Gets List of transactions
+// Response to TxByMerchantReq and TxByRecipientReq
+message TxRes {
   repeated Transaction transactionList = 1;
 }
 
 service TransactionService {
-  rpc GetProductList(GetProductListRequest) returns (ProductList){}
-  rpc ReviewTransaction(ReviewTransactionRequest) returns (Transaction){}
-  rpc SubmitTransaction(SubmitTransactionRequest) returns (Transaction){}
-  rpc GetTransactionsByRT(GetTransactionsByRTRequest) returns (TransactionsByRTResponse){}
+  rpc GetItemList(ItemListReq) returns (ItemList){}
+  rpc CreateItems(ItemList) returns (ItemList){}
+  rpc SubmitTx(SubmitTxReq) returns (Transaction){}
+  rpc GetRecipientTx(TxByRecipientReq) returns (TxRes){}
+  rpc GetMerchantTx(TxByMerchantReq) returns (TxRes){}
 }

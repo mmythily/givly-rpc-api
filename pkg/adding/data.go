@@ -1,5 +1,9 @@
 package adding
 
+import (
+	uuid "github.com/google/uuid"
+)
+
 // Merchant represents a member merchant
 // This is the data recived from frontend client
 type Merchant struct {
@@ -11,26 +15,25 @@ type Merchant struct {
 // This is the data recived from frontend client
 type Product struct {
 	ProductName string  `schema:"productName"`
-	ProductUnit string  `schema:"productUnit"`
-	UnitPrice   float32 `schema:"unitPrice"`
 	Price       float32 `schema:"price"`
 }
 
 // Transaction represents a sale transaction
 // This is the data recived from frontend client
 type Transaction struct {
-	Products    []Product `schema:"products"`
-	TotalPrice  float32   `schema:"totalPrice"`
-	MerchantID  string    `schema:"merchantId"`
-	RecipientID string    `schema:"recipientId"`
+	Products          []Product `schema:"products"`
+	TotalPrice        float32   `schema:"totalPrice"`
+	MerchantUUID      uuid.UUID `schema:"merchantUuid"`
+	RecipientCryptoID string    `schema:"recipientCryptoId"`
 }
 
-// ProductList represents a list of available products
-type ProductList struct {
-	ProductName string `schema:"productName"`
+// Item represents an item in available Items for purchase
+type Item struct {
+	ItemName string `schema:"itemName"`
+	ItemURL  string `schema:"itemUrl"`
 }
 
-// BatchProductList represents batch addition of products
-type BatchProductList struct {
-	Products []ProductList `schema:"products"`
+// ItemList represents batch addition of Items
+type ItemList struct {
+	ItemList []Item `schema:"itemList"`
 }

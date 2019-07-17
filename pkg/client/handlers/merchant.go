@@ -55,8 +55,7 @@ func (m MerchantHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // route Mounts the merchant handlers on Router
 func (m MerchantHandler) route() {
 	m.Router.HandleFunc("/create", m.handleCreateMerchant()).Methods("POST")
-	m.Router.HandleFunc("/update", m.handleUpdateMerchant()).Methods("POST")
-	m.Router.HandleFunc("/verifyAccount", m.handleVerifyAccount()).Methods("POST")
+	m.Router.HandleFunc("/verifyAccount", m.handleGetRecipientBalance()).Methods("POST")
 }
 
 // handleCreateMerchant handles creating a new merchant
@@ -65,9 +64,9 @@ func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		fmt.Println(r.FormValue("Message"))
-		pbRequest := &merchantPb.CreateMerchantRequest{
-			Storeemail: "error",
-			Storename:  "",
+		pbRequest := &merchantPb.CreateMerchantReq{
+			StoreEmail: "errora",
+			StoreName:  "",
 		}
 
 		pbResponse, err := m.Client.CreateMerchant(context.Background(), pbRequest)
@@ -77,20 +76,16 @@ func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
 			w.WriteHeader(http.StatusNotFound)
 			w.Write(HandleError(err))
 		}
+		
+		fmt.Printf("pbres: %v+", pbResponse)
 		response, _ := json.Marshal(pbResponse)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	}
 }
 
-// handleUpdateMerchant updates an existing merchant account
-func (m MerchantHandler) handleUpdateMerchant() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-	}
-}
-
 // handleVerifyAccount verifies the account of a recipient
-func (m MerchantHandler) handleVerifyAccount() http.HandlerFunc {
+func (m MerchantHandler) handleGetRecipientBalance() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	}
 }

@@ -34,17 +34,18 @@ func (t TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // route Mounts the transaction handlers on Router
 func (t TransactionHandler) route() {
-	t.Router.HandleFunc("/getProductList", t.handleGetProductList()).Methods("POST")
-	t.Router.HandleFunc("/review", t.handleReviewTransaction()).Methods("POST")
-	t.Router.HandleFunc("/submit", t.handleSubmitTransaction()).Methods("POST")
-	t.Router.HandleFunc("/getTransactionsByRT", t.handleGetTransactionsByRT()).Methods("POST")
+	t.Router.HandleFunc("/getItemList", t.handleGetItemList()).Methods("POST")
+	t.Router.HandleFunc("/createItemList", t.handleCreateItems()).Methods("POST")
+	t.Router.HandleFunc("/submitTx", t.handleSubmitTx()).Methods("POST")
+	t.Router.HandleFunc("/getTxByRecipient", t.handleGetRecipientTx()).Methods("POST")
+	t.Router.HandleFunc("/getTxByMerchant", t.handleGetMerchantTx()).Methods("POST")
 }
 
 // handleGetProductList retrieves a list of eligible products
-func (t TransactionHandler) handleGetProductList() http.HandlerFunc {
+func (t TransactionHandler) handleGetItemList() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		pbRequest := &transactionPb.GetProductListRequest{}
-		pbResponse, err := t.Client.GetProductList(context.Background(), pbRequest)
+		pbRequest := &transactionPb.ItemListReq{}
+		pbResponse, err := t.Client.GetItemList(context.Background(), pbRequest)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -54,20 +55,26 @@ func (t TransactionHandler) handleGetProductList() http.HandlerFunc {
 	}
 }
 
-// handleReviewTransaction checks the transaction value vs recipient balance
-func (t TransactionHandler) handleReviewTransaction() http.HandlerFunc {
+// handleCreateItems submits transation to blockchain endpoint
+func (t TransactionHandler) handleCreateItems() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// handleSubmitTransaction submits transation to blockchain endpoint
-func (t TransactionHandler) handleSubmitTransaction() http.HandlerFunc {
+// handleSubmitTx submits transation to blockchain endpoint
+func (t TransactionHandler) handleSubmitTx() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// handleGetTransactionsByRT gets transactions by a specific recipient
-func (t TransactionHandler) handleGetTransactionsByRT() http.HandlerFunc {
+// handleGetRecipientTx gets transactions by a specific recipient
+func (t TransactionHandler) handleGetRecipientTx() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+	}
+}
+
+// handleGetMerchantTx gets transactions by a specific merchant
+func (t TransactionHandler) handleGetMerchantTx() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	}
 }

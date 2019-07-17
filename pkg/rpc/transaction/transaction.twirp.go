@@ -33,13 +33,13 @@ import url "net/url"
 // ============================
 
 type TransactionService interface {
-	GetProductList(context.Context, *GetProductListRequest) (*ProductList, error)
+	GetItemList(context.Context, *ItemListReq) (*ItemList, error)
 
-	ReviewTransaction(context.Context, *ReviewTransactionRequest) (*Transaction, error)
+	SubmitTx(context.Context, *SubmitTxReq) (*Transaction, error)
 
-	SubmitTransaction(context.Context, *SubmitTransactionRequest) (*Transaction, error)
+	GetRecipientTx(context.Context, *TxByRecipientReq) (*TxRes, error)
 
-	GetTransactionsByRT(context.Context, *GetTransactionsByRTRequest) (*TransactionsByRTResponse, error)
+	GetMerchantTx(context.Context, *TxByMerchantReq) (*TxRes, error)
 }
 
 // ==================================
@@ -56,10 +56,10 @@ type transactionServiceProtobufClient struct {
 func NewTransactionServiceProtobufClient(addr string, client HTTPClient) TransactionService {
 	prefix := urlBase(addr) + TransactionServicePathPrefix
 	urls := [4]string{
-		prefix + "GetProductList",
-		prefix + "ReviewTransaction",
-		prefix + "SubmitTransaction",
-		prefix + "GetTransactionsByRT",
+		prefix + "GetItemList",
+		prefix + "SubmitTx",
+		prefix + "GetRecipientTx",
+		prefix + "GetMerchantTx",
 	}
 	if httpClient, ok := client.(*http.Client); ok {
 		return &transactionServiceProtobufClient{
@@ -73,11 +73,11 @@ func NewTransactionServiceProtobufClient(addr string, client HTTPClient) Transac
 	}
 }
 
-func (c *transactionServiceProtobufClient) GetProductList(ctx context.Context, in *GetProductListRequest) (*ProductList, error) {
+func (c *transactionServiceProtobufClient) GetItemList(ctx context.Context, in *ItemListReq) (*ItemList, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "GetProductList")
-	out := new(ProductList)
+	ctx = ctxsetters.WithMethodName(ctx, "GetItemList")
+	out := new(ItemList)
 	err := doProtobufRequest(ctx, c.client, c.urls[0], in, out)
 	if err != nil {
 		return nil, err
@@ -85,10 +85,10 @@ func (c *transactionServiceProtobufClient) GetProductList(ctx context.Context, i
 	return out, nil
 }
 
-func (c *transactionServiceProtobufClient) ReviewTransaction(ctx context.Context, in *ReviewTransactionRequest) (*Transaction, error) {
+func (c *transactionServiceProtobufClient) SubmitTx(ctx context.Context, in *SubmitTxReq) (*Transaction, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "ReviewTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "SubmitTx")
 	out := new(Transaction)
 	err := doProtobufRequest(ctx, c.client, c.urls[1], in, out)
 	if err != nil {
@@ -97,11 +97,11 @@ func (c *transactionServiceProtobufClient) ReviewTransaction(ctx context.Context
 	return out, nil
 }
 
-func (c *transactionServiceProtobufClient) SubmitTransaction(ctx context.Context, in *SubmitTransactionRequest) (*Transaction, error) {
+func (c *transactionServiceProtobufClient) GetRecipientTx(ctx context.Context, in *TxByRecipientReq) (*TxRes, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "SubmitTransaction")
-	out := new(Transaction)
+	ctx = ctxsetters.WithMethodName(ctx, "GetRecipientTx")
+	out := new(TxRes)
 	err := doProtobufRequest(ctx, c.client, c.urls[2], in, out)
 	if err != nil {
 		return nil, err
@@ -109,11 +109,11 @@ func (c *transactionServiceProtobufClient) SubmitTransaction(ctx context.Context
 	return out, nil
 }
 
-func (c *transactionServiceProtobufClient) GetTransactionsByRT(ctx context.Context, in *GetTransactionsByRTRequest) (*TransactionsByRTResponse, error) {
+func (c *transactionServiceProtobufClient) GetMerchantTx(ctx context.Context, in *TxByMerchantReq) (*TxRes, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "GetTransactionsByRT")
-	out := new(TransactionsByRTResponse)
+	ctx = ctxsetters.WithMethodName(ctx, "GetMerchantTx")
+	out := new(TxRes)
 	err := doProtobufRequest(ctx, c.client, c.urls[3], in, out)
 	if err != nil {
 		return nil, err
@@ -135,10 +135,10 @@ type transactionServiceJSONClient struct {
 func NewTransactionServiceJSONClient(addr string, client HTTPClient) TransactionService {
 	prefix := urlBase(addr) + TransactionServicePathPrefix
 	urls := [4]string{
-		prefix + "GetProductList",
-		prefix + "ReviewTransaction",
-		prefix + "SubmitTransaction",
-		prefix + "GetTransactionsByRT",
+		prefix + "GetItemList",
+		prefix + "SubmitTx",
+		prefix + "GetRecipientTx",
+		prefix + "GetMerchantTx",
 	}
 	if httpClient, ok := client.(*http.Client); ok {
 		return &transactionServiceJSONClient{
@@ -152,11 +152,11 @@ func NewTransactionServiceJSONClient(addr string, client HTTPClient) Transaction
 	}
 }
 
-func (c *transactionServiceJSONClient) GetProductList(ctx context.Context, in *GetProductListRequest) (*ProductList, error) {
+func (c *transactionServiceJSONClient) GetItemList(ctx context.Context, in *ItemListReq) (*ItemList, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "GetProductList")
-	out := new(ProductList)
+	ctx = ctxsetters.WithMethodName(ctx, "GetItemList")
+	out := new(ItemList)
 	err := doJSONRequest(ctx, c.client, c.urls[0], in, out)
 	if err != nil {
 		return nil, err
@@ -164,10 +164,10 @@ func (c *transactionServiceJSONClient) GetProductList(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *transactionServiceJSONClient) ReviewTransaction(ctx context.Context, in *ReviewTransactionRequest) (*Transaction, error) {
+func (c *transactionServiceJSONClient) SubmitTx(ctx context.Context, in *SubmitTxReq) (*Transaction, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "ReviewTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "SubmitTx")
 	out := new(Transaction)
 	err := doJSONRequest(ctx, c.client, c.urls[1], in, out)
 	if err != nil {
@@ -176,11 +176,11 @@ func (c *transactionServiceJSONClient) ReviewTransaction(ctx context.Context, in
 	return out, nil
 }
 
-func (c *transactionServiceJSONClient) SubmitTransaction(ctx context.Context, in *SubmitTransactionRequest) (*Transaction, error) {
+func (c *transactionServiceJSONClient) GetRecipientTx(ctx context.Context, in *TxByRecipientReq) (*TxRes, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "SubmitTransaction")
-	out := new(Transaction)
+	ctx = ctxsetters.WithMethodName(ctx, "GetRecipientTx")
+	out := new(TxRes)
 	err := doJSONRequest(ctx, c.client, c.urls[2], in, out)
 	if err != nil {
 		return nil, err
@@ -188,11 +188,11 @@ func (c *transactionServiceJSONClient) SubmitTransaction(ctx context.Context, in
 	return out, nil
 }
 
-func (c *transactionServiceJSONClient) GetTransactionsByRT(ctx context.Context, in *GetTransactionsByRTRequest) (*TransactionsByRTResponse, error) {
+func (c *transactionServiceJSONClient) GetMerchantTx(ctx context.Context, in *TxByMerchantReq) (*TxRes, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "transaction")
 	ctx = ctxsetters.WithServiceName(ctx, "TransactionService")
-	ctx = ctxsetters.WithMethodName(ctx, "GetTransactionsByRT")
-	out := new(TransactionsByRTResponse)
+	ctx = ctxsetters.WithMethodName(ctx, "GetMerchantTx")
+	out := new(TxRes)
 	err := doJSONRequest(ctx, c.client, c.urls[3], in, out)
 	if err != nil {
 		return nil, err
@@ -248,17 +248,17 @@ func (s *transactionServiceServer) ServeHTTP(resp http.ResponseWriter, req *http
 	}
 
 	switch req.URL.Path {
-	case "/twirp/transaction.TransactionService/GetProductList":
-		s.serveGetProductList(ctx, resp, req)
+	case "/twirp/transaction.TransactionService/GetItemList":
+		s.serveGetItemList(ctx, resp, req)
 		return
-	case "/twirp/transaction.TransactionService/ReviewTransaction":
-		s.serveReviewTransaction(ctx, resp, req)
+	case "/twirp/transaction.TransactionService/SubmitTx":
+		s.serveSubmitTx(ctx, resp, req)
 		return
-	case "/twirp/transaction.TransactionService/SubmitTransaction":
-		s.serveSubmitTransaction(ctx, resp, req)
+	case "/twirp/transaction.TransactionService/GetRecipientTx":
+		s.serveGetRecipientTx(ctx, resp, req)
 		return
-	case "/twirp/transaction.TransactionService/GetTransactionsByRT":
-		s.serveGetTransactionsByRT(ctx, resp, req)
+	case "/twirp/transaction.TransactionService/GetMerchantTx":
+		s.serveGetMerchantTx(ctx, resp, req)
 		return
 	default:
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
@@ -268,7 +268,7 @@ func (s *transactionServiceServer) ServeHTTP(resp http.ResponseWriter, req *http
 	}
 }
 
-func (s *transactionServiceServer) serveGetProductList(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetItemList(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -276,9 +276,9 @@ func (s *transactionServiceServer) serveGetProductList(ctx context.Context, resp
 	}
 	switch strings.TrimSpace(strings.ToLower(header[:i])) {
 	case "application/json":
-		s.serveGetProductListJSON(ctx, resp, req)
+		s.serveGetItemListJSON(ctx, resp, req)
 	case "application/protobuf":
-		s.serveGetProductListProtobuf(ctx, resp, req)
+		s.serveGetItemListProtobuf(ctx, resp, req)
 	default:
 		msg := fmt.Sprintf("unexpected Content-Type: %q", req.Header.Get("Content-Type"))
 		twerr := badRouteError(msg, req.Method, req.URL.Path)
@@ -286,16 +286,16 @@ func (s *transactionServiceServer) serveGetProductList(ctx context.Context, resp
 	}
 }
 
-func (s *transactionServiceServer) serveGetProductListJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetItemListJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "GetProductList")
+	ctx = ctxsetters.WithMethodName(ctx, "GetItemList")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
 		return
 	}
 
-	reqContent := new(GetProductListRequest)
+	reqContent := new(ItemListReq)
 	unmarshaler := jsonpb.Unmarshaler{AllowUnknownFields: true}
 	if err = unmarshaler.Unmarshal(req.Body, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request json"))
@@ -303,10 +303,10 @@ func (s *transactionServiceServer) serveGetProductListJSON(ctx context.Context, 
 	}
 
 	// Call service method
-	var respContent *ProductList
+	var respContent *ItemList
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.GetProductList(ctx, reqContent)
+		respContent, err = s.TransactionService.GetItemList(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -314,7 +314,7 @@ func (s *transactionServiceServer) serveGetProductListJSON(ctx context.Context, 
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *ProductList and nil error while calling GetProductList. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *ItemList and nil error while calling GetItemList. nil responses are not supported"))
 		return
 	}
 
@@ -341,9 +341,9 @@ func (s *transactionServiceServer) serveGetProductListJSON(ctx context.Context, 
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveGetProductListProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetItemListProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "GetProductList")
+	ctx = ctxsetters.WithMethodName(ctx, "GetItemList")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
@@ -355,17 +355,17 @@ func (s *transactionServiceServer) serveGetProductListProtobuf(ctx context.Conte
 		s.writeError(ctx, resp, wrapInternal(err, "failed to read request body"))
 		return
 	}
-	reqContent := new(GetProductListRequest)
+	reqContent := new(ItemListReq)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request proto"))
 		return
 	}
 
 	// Call service method
-	var respContent *ProductList
+	var respContent *ItemList
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.GetProductList(ctx, reqContent)
+		respContent, err = s.TransactionService.GetItemList(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -373,7 +373,7 @@ func (s *transactionServiceServer) serveGetProductListProtobuf(ctx context.Conte
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *ProductList and nil error while calling GetProductList. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *ItemList and nil error while calling GetItemList. nil responses are not supported"))
 		return
 	}
 
@@ -397,7 +397,7 @@ func (s *transactionServiceServer) serveGetProductListProtobuf(ctx context.Conte
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveReviewTransaction(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveSubmitTx(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -405,9 +405,9 @@ func (s *transactionServiceServer) serveReviewTransaction(ctx context.Context, r
 	}
 	switch strings.TrimSpace(strings.ToLower(header[:i])) {
 	case "application/json":
-		s.serveReviewTransactionJSON(ctx, resp, req)
+		s.serveSubmitTxJSON(ctx, resp, req)
 	case "application/protobuf":
-		s.serveReviewTransactionProtobuf(ctx, resp, req)
+		s.serveSubmitTxProtobuf(ctx, resp, req)
 	default:
 		msg := fmt.Sprintf("unexpected Content-Type: %q", req.Header.Get("Content-Type"))
 		twerr := badRouteError(msg, req.Method, req.URL.Path)
@@ -415,16 +415,16 @@ func (s *transactionServiceServer) serveReviewTransaction(ctx context.Context, r
 	}
 }
 
-func (s *transactionServiceServer) serveReviewTransactionJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveSubmitTxJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "ReviewTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "SubmitTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
 		return
 	}
 
-	reqContent := new(ReviewTransactionRequest)
+	reqContent := new(SubmitTxReq)
 	unmarshaler := jsonpb.Unmarshaler{AllowUnknownFields: true}
 	if err = unmarshaler.Unmarshal(req.Body, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request json"))
@@ -435,7 +435,7 @@ func (s *transactionServiceServer) serveReviewTransactionJSON(ctx context.Contex
 	var respContent *Transaction
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.ReviewTransaction(ctx, reqContent)
+		respContent, err = s.TransactionService.SubmitTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -443,7 +443,7 @@ func (s *transactionServiceServer) serveReviewTransactionJSON(ctx context.Contex
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling ReviewTransaction. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling SubmitTx. nil responses are not supported"))
 		return
 	}
 
@@ -470,9 +470,9 @@ func (s *transactionServiceServer) serveReviewTransactionJSON(ctx context.Contex
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveReviewTransactionProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveSubmitTxProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "ReviewTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "SubmitTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
@@ -484,7 +484,7 @@ func (s *transactionServiceServer) serveReviewTransactionProtobuf(ctx context.Co
 		s.writeError(ctx, resp, wrapInternal(err, "failed to read request body"))
 		return
 	}
-	reqContent := new(ReviewTransactionRequest)
+	reqContent := new(SubmitTxReq)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request proto"))
 		return
@@ -494,7 +494,7 @@ func (s *transactionServiceServer) serveReviewTransactionProtobuf(ctx context.Co
 	var respContent *Transaction
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.ReviewTransaction(ctx, reqContent)
+		respContent, err = s.TransactionService.SubmitTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -502,7 +502,7 @@ func (s *transactionServiceServer) serveReviewTransactionProtobuf(ctx context.Co
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling ReviewTransaction. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling SubmitTx. nil responses are not supported"))
 		return
 	}
 
@@ -526,7 +526,7 @@ func (s *transactionServiceServer) serveReviewTransactionProtobuf(ctx context.Co
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveSubmitTransaction(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetRecipientTx(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -534,9 +534,9 @@ func (s *transactionServiceServer) serveSubmitTransaction(ctx context.Context, r
 	}
 	switch strings.TrimSpace(strings.ToLower(header[:i])) {
 	case "application/json":
-		s.serveSubmitTransactionJSON(ctx, resp, req)
+		s.serveGetRecipientTxJSON(ctx, resp, req)
 	case "application/protobuf":
-		s.serveSubmitTransactionProtobuf(ctx, resp, req)
+		s.serveGetRecipientTxProtobuf(ctx, resp, req)
 	default:
 		msg := fmt.Sprintf("unexpected Content-Type: %q", req.Header.Get("Content-Type"))
 		twerr := badRouteError(msg, req.Method, req.URL.Path)
@@ -544,16 +544,16 @@ func (s *transactionServiceServer) serveSubmitTransaction(ctx context.Context, r
 	}
 }
 
-func (s *transactionServiceServer) serveSubmitTransactionJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetRecipientTxJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "SubmitTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "GetRecipientTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
 		return
 	}
 
-	reqContent := new(SubmitTransactionRequest)
+	reqContent := new(TxByRecipientReq)
 	unmarshaler := jsonpb.Unmarshaler{AllowUnknownFields: true}
 	if err = unmarshaler.Unmarshal(req.Body, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request json"))
@@ -561,10 +561,10 @@ func (s *transactionServiceServer) serveSubmitTransactionJSON(ctx context.Contex
 	}
 
 	// Call service method
-	var respContent *Transaction
+	var respContent *TxRes
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.SubmitTransaction(ctx, reqContent)
+		respContent, err = s.TransactionService.GetRecipientTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -572,7 +572,7 @@ func (s *transactionServiceServer) serveSubmitTransactionJSON(ctx context.Contex
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling SubmitTransaction. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *TxRes and nil error while calling GetRecipientTx. nil responses are not supported"))
 		return
 	}
 
@@ -599,9 +599,9 @@ func (s *transactionServiceServer) serveSubmitTransactionJSON(ctx context.Contex
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveSubmitTransactionProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetRecipientTxProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "SubmitTransaction")
+	ctx = ctxsetters.WithMethodName(ctx, "GetRecipientTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
@@ -613,17 +613,17 @@ func (s *transactionServiceServer) serveSubmitTransactionProtobuf(ctx context.Co
 		s.writeError(ctx, resp, wrapInternal(err, "failed to read request body"))
 		return
 	}
-	reqContent := new(SubmitTransactionRequest)
+	reqContent := new(TxByRecipientReq)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request proto"))
 		return
 	}
 
 	// Call service method
-	var respContent *Transaction
+	var respContent *TxRes
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.SubmitTransaction(ctx, reqContent)
+		respContent, err = s.TransactionService.GetRecipientTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -631,7 +631,7 @@ func (s *transactionServiceServer) serveSubmitTransactionProtobuf(ctx context.Co
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *Transaction and nil error while calling SubmitTransaction. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *TxRes and nil error while calling GetRecipientTx. nil responses are not supported"))
 		return
 	}
 
@@ -655,7 +655,7 @@ func (s *transactionServiceServer) serveSubmitTransactionProtobuf(ctx context.Co
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveGetTransactionsByRT(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetMerchantTx(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -663,9 +663,9 @@ func (s *transactionServiceServer) serveGetTransactionsByRT(ctx context.Context,
 	}
 	switch strings.TrimSpace(strings.ToLower(header[:i])) {
 	case "application/json":
-		s.serveGetTransactionsByRTJSON(ctx, resp, req)
+		s.serveGetMerchantTxJSON(ctx, resp, req)
 	case "application/protobuf":
-		s.serveGetTransactionsByRTProtobuf(ctx, resp, req)
+		s.serveGetMerchantTxProtobuf(ctx, resp, req)
 	default:
 		msg := fmt.Sprintf("unexpected Content-Type: %q", req.Header.Get("Content-Type"))
 		twerr := badRouteError(msg, req.Method, req.URL.Path)
@@ -673,16 +673,16 @@ func (s *transactionServiceServer) serveGetTransactionsByRT(ctx context.Context,
 	}
 }
 
-func (s *transactionServiceServer) serveGetTransactionsByRTJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetMerchantTxJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "GetTransactionsByRT")
+	ctx = ctxsetters.WithMethodName(ctx, "GetMerchantTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
 		return
 	}
 
-	reqContent := new(GetTransactionsByRTRequest)
+	reqContent := new(TxByMerchantReq)
 	unmarshaler := jsonpb.Unmarshaler{AllowUnknownFields: true}
 	if err = unmarshaler.Unmarshal(req.Body, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request json"))
@@ -690,10 +690,10 @@ func (s *transactionServiceServer) serveGetTransactionsByRTJSON(ctx context.Cont
 	}
 
 	// Call service method
-	var respContent *TransactionsByRTResponse
+	var respContent *TxRes
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.GetTransactionsByRT(ctx, reqContent)
+		respContent, err = s.TransactionService.GetMerchantTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -701,7 +701,7 @@ func (s *transactionServiceServer) serveGetTransactionsByRTJSON(ctx context.Cont
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *TransactionsByRTResponse and nil error while calling GetTransactionsByRT. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *TxRes and nil error while calling GetMerchantTx. nil responses are not supported"))
 		return
 	}
 
@@ -728,9 +728,9 @@ func (s *transactionServiceServer) serveGetTransactionsByRTJSON(ctx context.Cont
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *transactionServiceServer) serveGetTransactionsByRTProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *transactionServiceServer) serveGetMerchantTxProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
-	ctx = ctxsetters.WithMethodName(ctx, "GetTransactionsByRT")
+	ctx = ctxsetters.WithMethodName(ctx, "GetMerchantTx")
 	ctx, err = callRequestRouted(ctx, s.hooks)
 	if err != nil {
 		s.writeError(ctx, resp, err)
@@ -742,17 +742,17 @@ func (s *transactionServiceServer) serveGetTransactionsByRTProtobuf(ctx context.
 		s.writeError(ctx, resp, wrapInternal(err, "failed to read request body"))
 		return
 	}
-	reqContent := new(GetTransactionsByRTRequest)
+	reqContent := new(TxByMerchantReq)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, wrapInternal(err, "failed to parse request proto"))
 		return
 	}
 
 	// Call service method
-	var respContent *TransactionsByRTResponse
+	var respContent *TxRes
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
-		respContent, err = s.TransactionService.GetTransactionsByRT(ctx, reqContent)
+		respContent, err = s.TransactionService.GetMerchantTx(ctx, reqContent)
 	}()
 
 	if err != nil {
@@ -760,7 +760,7 @@ func (s *transactionServiceServer) serveGetTransactionsByRTProtobuf(ctx context.
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *TransactionsByRTResponse and nil error while calling GetTransactionsByRT. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *TxRes and nil error while calling GetMerchantTx. nil responses are not supported"))
 		return
 	}
 
@@ -1268,41 +1268,39 @@ func callError(ctx context.Context, h *twirp.ServerHooks, err twirp.Error) conte
 }
 
 var twirpFileDescriptor0 = []byte{
-	// 566 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0xad, 0x93, 0x7e, 0x24, 0xe3, 0xaa, 0x88, 0xa1, 0x08, 0xcb, 0x42, 0x60, 0x59, 0x0a, 0xe4,
-	0x52, 0x1b, 0x05, 0x21, 0x04, 0x08, 0x89, 0xe4, 0xd2, 0x0b, 0x42, 0x91, 0x1b, 0x7a, 0xe0, 0x00,
-	0x72, 0x9c, 0xc1, 0x5d, 0x51, 0x7f, 0xb0, 0x5e, 0x07, 0xf5, 0xa7, 0x70, 0xe1, 0xaf, 0x82, 0x76,
-	0xed, 0x24, 0xeb, 0x7c, 0xb4, 0x17, 0x6e, 0xbb, 0x6f, 0xdf, 0xbc, 0xbc, 0x99, 0x37, 0x31, 0xf4,
-	0xf2, 0x1f, 0xb1, 0xcf, 0xf3, 0xc8, 0x17, 0x3c, 0x4c, 0x8b, 0x30, 0x12, 0x2c, 0x4b, 0xf5, 0xb3,
-	0x97, 0xf3, 0x4c, 0x64, 0x68, 0x6a, 0x90, 0xfd, 0x34, 0xce, 0xb2, 0xf8, 0x9a, 0x7c, 0xf5, 0x34,
-	0x2d, 0xbf, 0xfb, 0x82, 0x25, 0x54, 0x88, 0x30, 0xc9, 0x2b, 0xb6, 0xfb, 0xdb, 0x80, 0xa3, 0x31,
-	0xcf, 0x66, 0x65, 0x24, 0xf0, 0x09, 0x40, 0x5e, 0x1d, 0x4b, 0x36, 0xb3, 0x0c, 0xc7, 0xe8, 0x77,
-	0x03, 0x0d, 0x41, 0x07, 0xcc, 0xfa, 0x96, 0x86, 0x09, 0x59, 0x2d, 0x45, 0xd0, 0x21, 0x44, 0xd8,
-	0x2f, 0x53, 0x26, 0xac, 0xb6, 0x7a, 0x52, 0x67, 0x74, 0xe1, 0x38, 0xe7, 0x2c, 0xa2, 0x31, 0xf1,
-	0xcf, 0xf2, 0x6d, 0xdf, 0x31, 0xfa, 0xad, 0xa0, 0x81, 0xe1, 0x29, 0x1c, 0xa8, 0xbb, 0x75, 0xa0,
-	0x1e, 0xab, 0x8b, 0xfb, 0xa7, 0x0d, 0xe6, 0x64, 0xd5, 0x0c, 0x3e, 0x83, 0x13, 0xad, 0xb7, 0x95,
-	0xc7, 0x35, 0x54, 0xfa, 0x4c, 0x88, 0x47, 0x57, 0x61, 0xaa, 0x1a, 0xa9, 0x7d, 0x6a, 0x90, 0xf4,
-	0xc4, 0x29, 0x62, 0x39, 0xa3, 0x8a, 0x52, 0xf9, 0x6d, 0x60, 0x68, 0x43, 0x87, 0xd3, 0x9c, 0xd1,
-	0x2f, 0x9a, 0x29, 0xcf, 0x9d, 0x60, 0x79, 0xc7, 0xc7, 0xd0, 0x2d, 0xca, 0x69, 0xc2, 0x84, 0xa0,
-	0x99, 0xf2, 0xdc, 0x09, 0x56, 0x00, 0xbe, 0x80, 0x4e, 0x3d, 0x94, 0xc2, 0x3a, 0x74, 0xda, 0x7d,
-	0x73, 0x70, 0xea, 0xe9, 0x39, 0xd5, 0xf3, 0x0e, 0x96, 0x2c, 0x7c, 0x03, 0x10, 0x71, 0x0a, 0x05,
-	0xcd, 0xbe, 0x85, 0xc2, 0x3a, 0x72, 0x8c, 0xbe, 0x39, 0xb0, 0xbd, 0x2a, 0x3b, 0x6f, 0x91, 0x9d,
-	0x37, 0x59, 0x64, 0x17, 0x74, 0x6b, 0xf6, 0x50, 0xe0, 0x3b, 0x30, 0x17, 0xb6, 0x64, 0x6d, 0xe7,
-	0xce, 0x5a, 0x58, 0xd0, 0x87, 0x02, 0xdf, 0xc3, 0xf1, 0xd2, 0xb6, 0xac, 0xee, 0xde, 0x59, 0x6d,
-	0x2e, 0xf9, 0x43, 0xe1, 0x3e, 0x82, 0x87, 0xe7, 0x24, 0xea, 0x76, 0x3e, 0xb2, 0x42, 0x04, 0xf4,
-	0xb3, 0xa4, 0x42, 0xb8, 0x3e, 0x98, 0x1a, 0xaa, 0x2d, 0xce, 0x27, 0xb9, 0x38, 0x86, 0xd3, 0xd6,
-	0x16, 0x47, 0x42, 0xee, 0x25, 0x58, 0x81, 0xb2, 0xa5, 0xe5, 0x5d, 0x8b, 0xe1, 0x5b, 0xd0, 0x57,
-	0x5a, 0x65, 0x6e, 0x0e, 0xac, 0xc6, 0x44, 0xf5, 0x2a, 0x9d, 0x2c, 0x75, 0x2f, 0x94, 0xe1, 0xff,
-	0xac, 0xfb, 0x01, 0xec, 0x73, 0xd2, 0x45, 0x8b, 0xd1, 0x4d, 0x30, 0x59, 0x28, 0xaf, 0xaf, 0x97,
-	0xb1, 0xb9, 0x5e, 0xee, 0x57, 0xb0, 0x36, 0xcb, 0x8b, 0x3c, 0x4b, 0x0b, 0xc2, 0x11, 0xdc, 0xd3,
-	0x7e, 0x4c, 0x8e, 0x50, 0xcd, 0xec, 0x36, 0x77, 0xeb, 0x05, 0x83, 0xbf, 0x2d, 0x40, 0x8d, 0x70,
-	0x41, 0x7c, 0xce, 0x22, 0xc2, 0x31, 0x9c, 0x34, 0x23, 0x43, 0xb7, 0xa1, 0xb9, 0x35, 0x4f, 0xdb,
-	0xda, 0xb6, 0xbf, 0x92, 0xe0, 0xee, 0xe1, 0x25, 0xdc, 0xdf, 0x88, 0x0e, 0x7b, 0x8d, 0x82, 0x5d,
-	0xd1, 0xda, 0x3b, 0xfb, 0xa9, 0x74, 0x37, 0xa2, 0x5b, 0xd3, 0xdd, 0x15, 0xed, 0xad, 0xba, 0x31,
-	0x3c, 0xd8, 0x12, 0x1d, 0x3e, 0x5f, 0x1f, 0xc3, 0x8e, 0x70, 0xed, 0xde, 0x2e, 0xed, 0x46, 0x86,
-	0xee, 0xde, 0xe8, 0xf5, 0x97, 0x57, 0x31, 0x13, 0x57, 0xe5, 0xd4, 0x8b, 0xb2, 0xc4, 0xe7, 0x65,
-	0x52, 0xf0, 0x30, 0x61, 0x7e, 0xcc, 0xe6, 0xd7, 0x37, 0x67, 0x3c, 0x8f, 0xce, 0xc2, 0x9c, 0xf9,
-	0x5b, 0xbe, 0xe9, 0xd3, 0x43, 0xf5, 0xbf, 0x7b, 0xf9, 0x2f, 0x00, 0x00, 0xff, 0xff, 0xee, 0x25,
-	0x8c, 0xda, 0xf1, 0x05, 0x00, 0x00,
+	// 537 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x94, 0xdf, 0x8f, 0xd2, 0x40,
+	0x10, 0xc7, 0x29, 0x27, 0x0a, 0x53, 0xcf, 0xd3, 0xc9, 0x5d, 0xd2, 0x34, 0x67, 0x24, 0x9b, 0x98,
+	0xf0, 0xe0, 0xb5, 0x86, 0xcb, 0x45, 0xe3, 0x8b, 0xc8, 0xc5, 0x10, 0xe2, 0x8f, 0x98, 0x52, 0x5f,
+	0x7c, 0xb2, 0x2c, 0x2b, 0x6c, 0x64, 0x69, 0x6f, 0xbb, 0xbd, 0xc0, 0xff, 0xe3, 0xbf, 0xe8, 0xfb,
+	0xa5, 0xbf, 0x60, 0x5b, 0xe0, 0x6d, 0x77, 0xe6, 0xdb, 0xd9, 0xef, 0x7c, 0x66, 0x52, 0x78, 0x1d,
+	0xfd, 0x9d, 0xbb, 0x32, 0xa2, 0xae, 0x92, 0xc1, 0x2a, 0x0e, 0xa8, 0xe2, 0xe1, 0x4a, 0x3f, 0x3b,
+	0x91, 0x0c, 0x55, 0x88, 0xa6, 0x16, 0xb2, 0x5f, 0xcd, 0xc3, 0x70, 0xbe, 0x64, 0x6e, 0x96, 0x9a,
+	0x26, 0x7f, 0x5c, 0xc5, 0x05, 0x8b, 0x55, 0x20, 0xa2, 0x5c, 0x4d, 0x7e, 0x43, 0x7b, 0x12, 0x2c,
+	0xd9, 0x58, 0x31, 0x81, 0x36, 0xb4, 0xb9, 0x62, 0xe2, 0x67, 0xc2, 0x67, 0x96, 0xd1, 0x35, 0x7a,
+	0x1d, 0x6f, 0x7b, 0x2f, 0x73, 0xdf, 0x03, 0xc1, 0xac, 0xe6, 0x2e, 0x97, 0xde, 0xf1, 0x12, 0x3a,
+	0xe9, 0xd9, 0x5f, 0x24, 0x62, 0x6a, 0x9d, 0x64, 0xc9, 0x5d, 0x80, 0x7c, 0x84, 0x76, 0x5a, 0xfd,
+	0x2b, 0x8f, 0x15, 0x5e, 0x43, 0x27, 0x2e, 0x5e, 0x8b, 0x2d, 0xa3, 0x7b, 0xd2, 0x33, 0xfb, 0x17,
+	0x8e, 0xde, 0x42, 0xe9, 0xc5, 0xdb, 0xe9, 0x08, 0x85, 0x27, 0x3f, 0x64, 0x38, 0x4b, 0xa8, 0xc2,
+	0x2e, 0x98, 0x51, 0x7e, 0xd4, 0x4c, 0xea, 0x21, 0x4d, 0xa1, 0x59, 0xd5, 0x43, 0x78, 0x0e, 0xad,
+	0x48, 0x72, 0xca, 0x32, 0xa7, 0x4d, 0x2f, 0xbf, 0x90, 0xff, 0x06, 0x98, 0xfe, 0xce, 0x08, 0xf6,
+	0xe0, 0x4c, 0xf3, 0xa5, 0xbd, 0x56, 0x0f, 0x23, 0x81, 0xa7, 0x82, 0x49, 0xba, 0x08, 0x56, 0xb9,
+	0xa9, 0xfc, 0xc9, 0x4a, 0x0c, 0xdf, 0xc0, 0x0b, 0xc9, 0x28, 0x8f, 0x38, 0x5b, 0xa9, 0x5b, 0xb9,
+	0x89, 0x54, 0x38, 0x9e, 0x15, 0xa4, 0xf6, 0x13, 0xf8, 0x16, 0xda, 0x85, 0xe1, 0xd8, 0x7a, 0x94,
+	0x41, 0x3a, 0xaf, 0x40, 0x2a, 0x68, 0x78, 0x5b, 0x15, 0xbe, 0x87, 0x0e, 0x95, 0x2c, 0x50, 0x6c,
+	0xf6, 0x49, 0x59, 0xad, 0xae, 0xd1, 0x33, 0xfb, 0xb6, 0x93, 0x8f, 0xde, 0x29, 0x47, 0xef, 0xf8,
+	0xe5, 0xe8, 0xbd, 0x9d, 0x98, 0x9c, 0x82, 0x59, 0x4e, 0xc7, 0x63, 0x77, 0x64, 0x0c, 0xe6, 0x24,
+	0x99, 0x0a, 0xae, 0xfc, 0xb5, 0xc7, 0xee, 0xf0, 0x03, 0xe8, 0xdb, 0x94, 0x11, 0x30, 0xfb, 0x56,
+	0xc5, 0x8c, 0x06, 0xcd, 0xd3, 0xc5, 0x64, 0x00, 0xcf, 0xfd, 0xf5, 0x70, 0xe3, 0x95, 0xed, 0xa5,
+	0xf5, 0x0e, 0x72, 0x30, 0x8e, 0x70, 0x20, 0x37, 0x70, 0x96, 0x56, 0xf8, 0x56, 0x90, 0x4c, 0x0b,
+	0xd4, 0x61, 0x1b, 0xfb, 0xb0, 0xc9, 0x17, 0x68, 0xa5, 0xee, 0x63, 0x1c, 0x56, 0x66, 0x98, 0xb6,
+	0x58, 0xec, 0xdc, 0xf1, 0x0e, 0xea, 0x1f, 0xf4, 0xff, 0x35, 0x01, 0x35, 0xc1, 0x84, 0xc9, 0x7b,
+	0x4e, 0x19, 0x0e, 0xc0, 0x1c, 0x31, 0xb5, 0xdd, 0xeb, 0x6a, 0x41, 0x0d, 0xa8, 0x7d, 0x71, 0x30,
+	0x43, 0x1a, 0x38, 0x80, 0x76, 0x49, 0xba, 0xf6, 0xb9, 0x36, 0x00, 0xfb, 0xa8, 0x53, 0xd2, 0xc0,
+	0xcf, 0xf0, 0x6c, 0xc4, 0xd4, 0x96, 0xaf, 0xbf, 0xc6, 0x97, 0x55, 0x75, 0x8d, 0xbe, 0x8d, 0xb5,
+	0xb4, 0xc7, 0x62, 0xd2, 0xc0, 0x5b, 0x38, 0x1d, 0x31, 0x55, 0x42, 0xf6, 0xd7, 0x78, 0xb9, 0x57,
+	0x45, 0x9b, 0xc0, 0xe1, 0x22, 0xc3, 0x77, 0xbf, 0x6e, 0xe6, 0x5c, 0x2d, 0x92, 0xa9, 0x43, 0x43,
+	0xe1, 0xca, 0x44, 0xc4, 0x32, 0x10, 0xdc, 0x9d, 0xf3, 0xfb, 0xe5, 0xe6, 0x4a, 0x46, 0xf4, 0x2a,
+	0x88, 0xb8, 0x7b, 0xe0, 0xff, 0x35, 0x7d, 0x9c, 0xad, 0xe7, 0xf5, 0x43, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0x98, 0x04, 0x01, 0x85, 0xdd, 0x04, 0x00, 0x00,
 }
