@@ -2,22 +2,17 @@ package psql
 
 import (
 	"crypto/md5"
-	"crypto/rand"
 	"encoding/hex"
 	"time"
+	uuid "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-
 	// Used by gorm
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// getMD5Hash hashes a string to hex
+// getMD5Hash hashes a uuid to hex
 func getMD5Hash() string {
-	b := make([]byte, 16)
-	if _, err := rand.Read(b); err != nil {
-		panic(err)
-	}
-	hash := md5.Sum(b)
+	hash := md5.Sum([]byte(uuid.New().String()))
 	return hex.EncodeToString(hash[:])
 }
 

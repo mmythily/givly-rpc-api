@@ -3,38 +3,20 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	//"github.com/twitchtv/twirp"
-
 	"github.com/gorilla/mux"
+	"github.com/golang/protobuf/proto"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 )
+
+// mRPCProcessor represents the rpc function caller
+type mRPCProcessor func(*http.Request, merchantPb.MerchantService) (proto.Message, error)
 
 // MerchantHandler handles merchant client requests
 type MerchantHandler struct {
 	Client merchantPb.MerchantService
 	Router *mux.Router
 }
-
-// TwirpError defines a twirp Error
-type TwirpError struct {
-	Message string
-	Status string
-}
-
-// HandleError handles errors
-// Change this to Error Wrapper TODO
-func HandleError(err error) []byte {
-	//twirpErr := twirp.NewError()
-	newError := TwirpError{
-		Message: err.Error(),
-		// Change to twirp code TODO
-		Status: "",
-	}
-	errorToReturn, _ := json.Marshal(&newError)
-	return errorToReturn
-} 
 
 // NewMerchantHandler returns a merchant handler
 func NewMerchantHandler(addr string, r *mux.Router) MerchantHandler {
@@ -49,42 +31,79 @@ func NewMerchantHandler(addr string, r *mux.Router) MerchantHandler {
 
 // ServeHTTP implements Handler
 func (m MerchantHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	m.Router.ServeHTTP(w,r)
+	m.Router.ServeHTTP(w, r)
 }
 
 // route Mounts the merchant handlers on Router
 func (m MerchantHandler) route() {
-	m.Router.HandleFunc("/create", m.handleCreateMerchant()).Methods("POST")
-	m.Router.HandleFunc("/verifyAccount", m.handleGetRecipientBalance()).Methods("POST")
+	m.Router.HandleFunc("/create", m.respond(createMerchant, handleError)).Methods("POST")
+	m.Router.HandleFunc("/verifyAccount", m.respond(verifyAccount, handleError)).Methods("POST")
 }
 
-// handleCreateMerchant handles creating a new merchant
-func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
-	// Code here gets run one time when instance starts
+// respond wraps the response with headers and logging
+func (m *MerchantHandler) respond(process mRPCProcessor, format errFormater) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
-		pbRequest := &merchantPb.CreateMerchantReq{
-			StoreEmail: r.FormValue("storeEmail"),
-			StoreName:  r.FormValue("storeName"),
-		}
-
-		pbResponse, err := m.Client.CreateMerchant(context.Background(), pbRequest)
+		pbResponse, err := process(r, m.Client)
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
 			// Change status to match twirp error TODO
 			w.WriteHeader(http.StatusNotFound)
-			w.Write(HandleError(err))
+			w.Write(format(err))
 		}
-		
-		fmt.Printf("pbres: %v+", pbResponse)
+		// Marshall the response
 		response, _ := json.Marshal(pbResponse)
+		// Send back to Client
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	}
 }
 
-// handleVerifyAccount verifies the account of a recipient
-func (m MerchantHandler) handleGetRecipientBalance() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+/*
+	mRPCProcessors definitions
+*/
+
+/*
+expects:
+{
+	storeEmail:
+	storeName:
+}
+*/
+// createMerchant handles creating a new merchant
+func createMerchant(r *http.Request, pb merchantPb.MerchantService) (proto.Message, error) {
+	// Parse incoming JSON
+	r.ParseForm()
+	// Create protobuf request
+	pbRequest := &merchantPb.CreateMerchantReq{
+		StoreEmail: r.FormValue("storeEmail"),
+		StoreName:  r.FormValue("storeName"),
 	}
+	// Call RPC function and get protobuf response
+	pbResponse, err := pb.CreateMerchant(context.Background(), pbRequest)
+	if err != nil {
+		return nil, err
+	}
+	return pbResponse, nil
+}
+
+/*
+expects:
+{
+	recipientCryptoId: "1234"
+}
+*/
+// verifyAccount verifies the account of a recipient
+func verifyAccount(r *http.Request, pb merchantPb.MerchantService) (proto.Message, error) {
+	// Parse incoming JSON
+	r.ParseForm()
+	// Create protobuf request
+	pbRequest := merchantPb.RecipientBalanceReq{
+		RecipientCryptoId: r.FormValue("recipientCryptoId"),
+	}
+	// Call RPC function and get protobuf response
+	pbResponse, err := pb.GetRecipientBalance(context.Background(), &pbRequest)
+	if err != nil {
+		return nil, err
+	}
+	return pbResponse, nil
 }

@@ -2,11 +2,14 @@ package http
 
 import (
 	"context"
-
+	"errors"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	"github.com/rumsrami/givly-rpc-api/pkg/adding"
 	"github.com/rumsrami/givly-rpc-api/pkg/listing"
 )
+
+// TODO Define error types to send back to the RPC client
+// Map the errors to the DB errors that are captured here
 
 // MerchantDirectory implements twirp MerchantService interface
 type MerchantDirectory struct{
@@ -64,6 +67,10 @@ func (m *MerchantDirectory) GetRecipientBalance(ctx context.Context, req *mercha
 		Hits endpoint for recipient wallet
 		Returns false if recipient doesnt exit or balance amount
 	*/
-	return nil, nil
+
+	// return &merchantPb.RecipientBalance{
+	// 	Balance: 100,
+	// }, nil
+	return nil, errors.New("Not working")
 }
 

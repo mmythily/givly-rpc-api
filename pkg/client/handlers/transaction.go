@@ -3,12 +3,14 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
-
 	"github.com/gorilla/mux"
+	"github.com/golang/protobuf/proto"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
+
+// txRPCProcessor represents the rpc function caller
+type txRPCProcessor func(*http.Request, transactionPb.TransactionService) (proto.Message, error)
 
 // TransactionHandler handles transaction client requests
 type TransactionHandler struct {
@@ -34,47 +36,74 @@ func (t TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // route Mounts the transaction handlers on Router
 func (t TransactionHandler) route() {
-	t.Router.HandleFunc("/getItemList", t.handleGetItemList()).Methods("POST")
-	t.Router.HandleFunc("/createItemList", t.handleCreateItems()).Methods("POST")
-	t.Router.HandleFunc("/submitTx", t.handleSubmitTx()).Methods("POST")
-	t.Router.HandleFunc("/getTxByRecipient", t.handleGetRecipientTx()).Methods("POST")
-	t.Router.HandleFunc("/getTxByMerchant", t.handleGetMerchantTx()).Methods("POST")
+	t.Router.HandleFunc("/getItemList", t.respond(getItemList, handleError)).Methods("POST")
+	t.Router.HandleFunc("/createItemList", t.respond(createItems, handleError)).Methods("POST")
+	t.Router.HandleFunc("/submitTx", t.respond(submitTx, handleError)).Methods("POST")
+	t.Router.HandleFunc("/getTxByRecipient", t.respond(getRecipientTx, handleError)).Methods("POST")
+	t.Router.HandleFunc("/getTxByMerchant", t.respond(getMerchantTx, handleError)).Methods("POST")
 }
 
-// handleGetProductList retrieves a list of eligible products
-func (t TransactionHandler) handleGetItemList() http.HandlerFunc {
+// respond wraps the response with headers and logging
+func (t *TransactionHandler) respond(process txRPCProcessor, format errFormater) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		pbRequest := &transactionPb.ItemListReq{}
-		pbResponse, err := t.Client.GetItemList(context.Background(), pbRequest)
+		pbResponse, err := process(r, t.Client)
 		if err != nil {
-			fmt.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			// Change status to match twirp error TODO
+			w.WriteHeader(http.StatusNotFound)
+			w.Write(format(err))
 		}
+		// Marshall the response
 		response, _ := json.Marshal(pbResponse)
+		// Send back to Client
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(response)
 	}
 }
 
-// handleCreateItems submits transation to blockchain endpoint
-func (t TransactionHandler) handleCreateItems() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+
+// getItemList retrieves a list of eligible products
+func getItemList(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	pbRequest := &transactionPb.ItemListReq{}
+	pbResponse, err := pb.GetItemList(context.Background(), pbRequest)
+	if err != nil {
+		return nil, err
 	}
+	return pbResponse, nil
 }
 
-// handleSubmitTx submits transation to blockchain endpoint
-func (t TransactionHandler) handleSubmitTx() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-	}
+// createItems submits transation to blockchain endpoint
+func createItems(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Create protobuf request
+	// Call RPC function and get protobuf response
+	// Marshall the response
+	// Send back to Client
+	return nil, nil
 }
 
-// handleGetRecipientTx gets transactions by a specific recipient
-func (t TransactionHandler) handleGetRecipientTx() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-	}
+// submitTx submits transation to blockchain endpoint
+func submitTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Create protobuf request
+	// Call RPC function and get protobuf response
+	// Marshall the response
+	// Send back to Client
+	return nil, nil
 }
 
-// handleGetMerchantTx gets transactions by a specific merchant
-func (t TransactionHandler) handleGetMerchantTx() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-	}
+// getRecipientTx gets transactions by a specific recipient
+func getRecipientTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Create protobuf request
+	// Call RPC function and get protobuf response
+	// Marshall the response
+	// Send back to Client
+	return nil, nil
+}
+
+// getMerchantTx gets transactions by a specific merchant
+func getMerchantTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Create protobuf request
+	// Call RPC function and get protobuf response
+	// Marshall the response
+	// Send back to Client
+	return nil, nil
 }

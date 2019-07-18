@@ -2,12 +2,14 @@ package http
 
 import (
 	"context"
-
+	"errors"
 	"github.com/rumsrami/givly-rpc-api/pkg/adding"
 	"github.com/rumsrami/givly-rpc-api/pkg/listing"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
-
 )
+
+// TODO Define error types to send back to the RPC client
+// Map the errors to the DB errors that are captured here
 
 // TransactionDirectory implements twirp TransactionService interface
 type TransactionDirectory struct {
@@ -33,14 +35,14 @@ func (t *TransactionDirectory) GetItemList(ctx context.Context, req *transaction
 		For demo purpose, hits the db directly and gets back the list of essential
 		products, it is up to the merchant to price them as he wishes
 	*/
-	itemList := &transactionPb.ItemList{
-		SaleItems: []*transactionPb.SaleItem{
-			&transactionPb.SaleItem{
-				ItemName: "Banana",
-			},
-		},
-	}
-	return itemList, nil
+	// itemList := &transactionPb.ItemList{
+	// 	SaleItems: []*transactionPb.SaleItem{
+	// 		&transactionPb.SaleItem{
+	// 			ItemName: "Banana",
+	// 		},
+	// 	},
+	// }
+	return nil, errors.New("List empty")
 }
 
 // SubmitTx commits the transaction to the database
