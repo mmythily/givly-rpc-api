@@ -23,6 +23,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	db.Migrate()
 
 	adder := adding.NewService(db)
 	lister := listing.NewService(db)
