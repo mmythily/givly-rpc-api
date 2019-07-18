@@ -24,6 +24,8 @@ message CreateMerchantReq {
   string storeEmail = 1;
   // Entered on signup
   string storeName = 2;
+  // Created from crypto endpoint
+  string merchantCryptoId = 3;
 }
 
 message RecipientBalanceReq {

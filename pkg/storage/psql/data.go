@@ -69,6 +69,9 @@ type Item struct {
 	ItemURL  string
 }
 
+//Items represent mutliples of on item uset to retrieve items
+type Items []Item
+
 // BeforeCreate will set a UUID rather than numeric ID.
 func (i *Item) BeforeCreate(scope *gorm.Scope) error {
 	uuid := getMD5Hash()

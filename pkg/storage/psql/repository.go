@@ -1,6 +1,7 @@
 package psql
 
 import (
+	"fmt"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/jinzhu/gorm"
 
@@ -44,10 +45,8 @@ func (s *Storage) Close() {
 
 // AddMerchant adds a new merchant, creates uuid and returns it
 func (s *Storage) AddMerchant(req merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error) {
-	// Hit Crypto endpoint and get merchant crypto id
-	// Using 123 now as a stub
 	newMerchant := Merchant{
-		MerchantCryptoID: "123",
+		MerchantCryptoID: req.MerchantCryptoId,
 		StoreEmail: req.StoreEmail,
 		StoreName: req.StoreName,
 	}
@@ -70,7 +69,21 @@ func (s *Storage) AddItems(req transactionPb.ItemList) (*transactionPb.ItemList,
 
 // GetItemList gets a list of available items
 func (s *Storage) GetItemList(req transactionPb.ItemListReq) (*transactionPb.ItemList, error) {
-	return nil, nil
+	items := Items{}
+	if err := s.DB.Find(&items).Error; err != nil {
+		return nil, err
+	}
+	var pbItems transactionPb.ItemList
+	for _, item := range items {
+		saleItem := transactionPb.SaleItem{
+			ItemUuid: item.ItemUUID,
+			ItemName: item.ItemName,
+			ItemThumb: item.ItemURL,
+		}
+		pbItems.SaleItems = append(pbItems.SaleItems, &saleItem)
+	}
+	fmt.Println(items)
+	return &pbItems, nil
 }
 
 // GetBalanceByCryptoID gets balance of recipient

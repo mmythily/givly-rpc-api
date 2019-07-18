@@ -44,7 +44,6 @@ func NewMerchantDirectory(a adding.Service, l listing.Service) *MerchantDirector
 
 // CreateMerchant creates a new merchant
 func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error) {
-	//var mytimestamp timestamp.Timestamp
 	/*
 		Recieves storeemail and storename
 		Checks for duplicate emails
@@ -52,6 +51,8 @@ func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.
 		Stores Merchant in db
 		Returns back the new updated merchant information
 	*/
+	// Long wait for the crypto enpoint to send back MerchantCryptoId
+	req.MerchantCryptoId = "123"
 	newMerchant, err := m.A.CreateMerchant(*req)
 	if err != nil {
 		return nil, err

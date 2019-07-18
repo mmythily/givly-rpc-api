@@ -42,6 +42,22 @@ func (t *TransactionDirectory) GetItemList(ctx context.Context, req *transaction
 	// 		},
 	// 	},
 	// }
+	items, _ := t.L.GetItemList(transactionPb.ItemListReq{})
+	return items, nil
+}
+// CreateItems adds to the list of available products in the item list
+func (t *TransactionDirectory) CreateItems(ctx context.Context, req *transactionPb.ItemList) (*transactionPb.ItemList, error) {
+	/*
+		For demo purpose, hits the db directly and gets back the list of essential
+		products, it is up to the merchant to price them as he wishes
+	*/
+	// itemList := &transactionPb.ItemList{
+	// 	SaleItems: []*transactionPb.SaleItem{
+	// 		&transactionPb.SaleItem{
+	// 			ItemName: "Banana",
+	// 		},
+	// 	},
+	// }
 	return nil, errors.New("List empty")
 }
 

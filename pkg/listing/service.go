@@ -54,8 +54,12 @@ func (s *service) GetRecipientBalance(req merchantPb.RecipientBalanceReq) (*merc
 	return nil, nil
 }
 
-func (s *service) GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error){
-	return nil, nil
+func (s *service) GetItemList(req transactionPb.ItemListReq) (*transactionPb.ItemList, error){
+	itemList, err := s.repo.GetItemList(req)
+	if err != nil {
+		return nil, err
+	}
+	return itemList, nil
 }
 
 func (s *service)GetRecipientTx(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error){
