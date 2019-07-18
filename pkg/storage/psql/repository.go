@@ -1,8 +1,7 @@
 package psql
 
 import (
-	//"fmt"
-	uuid "github.com/google/uuid"
+	"github.com/golang/protobuf/ptypes"
 	"github.com/jinzhu/gorm"
 
 	// used by gorm
@@ -44,42 +43,53 @@ func (s *Storage) Close() {
 }
 
 // AddMerchant adds a new merchant, creates uuid and returns it
-func (s *Storage) AddMerchant(merchantPb.CreateMerchantReq) (uuid.UUID, error) {
-	return uuid.New(), nil
-}
-
-// GetMerchantByUUID Queries the database for a merchant by his uuid
-func (s *Storage) GetMerchantByUUID(uuid uuid.UUID) (*merchantPb.Merchant, error) {
-	return nil, nil
+func (s *Storage) AddMerchant(req merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error) {
+	// Hit Crypto endpoint and get merchant crypto id
+	// Using 123 now as a stub
+	newMerchant := Merchant{
+		MerchantCryptoID: "123",
+		StoreEmail: req.StoreEmail,
+		StoreName: req.StoreName,
+	}
+	if err := s.DB.Create(&newMerchant).Error; err != nil {
+		return nil, err
+	}
+	timeStamp, _ := ptypes.TimestampProto(newMerchant.CreatedAt)
+	return &merchantPb.Merchant{
+		MerchantUuid: newMerchant.MerchantUUID,
+		MerchantCryptoId: newMerchant.MerchantCryptoID,
+		StoreEmail: newMerchant.StoreEmail,
+		CreatedAt: timeStamp,
+	}, nil
 }
 
 // AddItems adds a list of available items
-func (s *Storage) AddItems(transactionPb.ItemList) error {
-	return nil
+func (s *Storage) AddItems(req transactionPb.ItemList) (*transactionPb.ItemList, error) {
+	return nil, nil
 }
 
 // GetItemList gets a list of available items
-func (s *Storage) GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error) {
+func (s *Storage) GetItemList(req transactionPb.ItemListReq) (*transactionPb.ItemList, error) {
 	return nil, nil
 }
 
 // GetBalanceByCryptoID gets balance of recipient
-func (s *Storage) GetBalanceByCryptoID(merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error) {
+func (s *Storage) GetBalanceByCryptoID(req merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error) {
 	return nil, nil
 }
 
 // AddTransaction adds a new transaction with uuid signals success
-func (s *Storage) AddTransaction(transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {
+func (s *Storage) AddTransaction(req transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {
 	return nil, nil
 }
 
 // GetTxByRecipientCryptoID gets transactions for a recipient by crypto id
-func (s *Storage) GetTxByRecipientCryptoID(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error) {
+func (s *Storage) GetTxByRecipientCryptoID(req transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error) {
 	return nil, nil
 }
 
 // GetTxByMerchantUUID gets transactions for a merchant by crypto id
-func (s *Storage) GetTxByMerchantUUID(transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error) {
+func (s *Storage) GetTxByMerchantUUID(req transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error) {
 	return nil, nil
 }
 

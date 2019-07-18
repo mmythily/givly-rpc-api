@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"errors"
 
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	"github.com/rumsrami/givly-rpc-api/pkg/adding"
@@ -50,15 +49,11 @@ func (m *MerchantDirectory) CreateMerchant(ctx context.Context, req *merchantPb.
 		Stores Merchant in db
 		Returns back the new updated merchant information
 	*/
-
-	if req.StoreEmail == "error" {
-		return nil, errors.New("Email not found")
+	newMerchant, err := m.A.CreateMerchant(*req)
+	if err != nil {
+		return nil, err
 	}
-	return &merchantPb.Merchant{
-		MerchantUuid: "1234",
-		StoreEmail:  "r@r.com",
-		StoreName:   "Kleb",
-	}, nil
+	return newMerchant, nil
 }
 
 

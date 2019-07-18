@@ -1,7 +1,6 @@
 package adding
 
 import (
-	uuid "github.com/google/uuid"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
@@ -14,7 +13,7 @@ import (
 // Service returns a pbType data Response
 // Service calles storage(db) layer with Data type entity
 type Service interface {
-	// Add and Get actions on Merchant db model
+	// Add and Get actions on Merchant db model (one db call)
 	CreateMerchant(merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error)
 	// Add and Get actions on ItemList db model
 	CreateItems(transactionPb.ItemList) (*transactionPb.ItemList, error)
@@ -34,11 +33,9 @@ type Service interface {
 type Repository interface {
 	// Add db functions requires to fullfil the service
 	// AddMerchant adds a new merchant, creates uuid and returns it
-	AddMerchant(merchantPb.CreateMerchantReq) (uuid.UUID, error)
-	// GetMerchantByUUID Queries the database for a merchant by his uuid
-	GetMerchantByUUID(uuid uuid.UUID) (*merchantPb.Merchant, error)
+	AddMerchant(merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error)
 	// AddItems adds a list of available items
-	AddItems(transactionPb.ItemList) error
+	AddItems(transactionPb.ItemList) (*transactionPb.ItemList, error)
 	// GetItemList gets a list of available items
 	GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error)
 	// GetBalanceByCryptoID gets balance of recipient
@@ -59,15 +56,11 @@ func NewService(r Repository) Service {
 }
 
 func (s *service) CreateMerchant(req merchantPb.CreateMerchantReq) (*merchantPb.Merchant, error) {
-	uid, err := s.repo.AddMerchant(req)
+	newMerchant, err := s.repo.AddMerchant(req)
 	if err != nil {
 		return nil, err
 	}
-	createdMerchant, err := s.repo.GetMerchantByUUID(uid)
-	if err != nil {
-		return nil, err
-	}
-	return createdMerchant, nil
+	return newMerchant, nil
 }
 
 func (s *service) CreateItems(req transactionPb.ItemList) (*transactionPb.ItemList, error) {

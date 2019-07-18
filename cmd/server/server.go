@@ -28,7 +28,7 @@ func main() {
 	adder := adding.NewService(db)
 	lister := listing.NewService(db)
 
-	defer db.DB.Close()
+	defer db.Close()
 	server := http.NewRPCServer(adder, lister)
 	server.Run(":8080")
 }

@@ -1,9 +1,5 @@
 package adding
 
-import (
-	uuid "github.com/google/uuid"
-)
-
 // Merchant represents a member merchant
 // This is the data recived from frontend client
 type Merchant struct {
@@ -23,7 +19,7 @@ type Product struct {
 type Transaction struct {
 	Products          []Product `schema:"products"`
 	TotalPrice        float32   `schema:"totalPrice"`
-	MerchantUUID      uuid.UUID `schema:"merchantUuid"`
+	MerchantUUID      string `schema:"merchantUuid"`
 	RecipientCryptoID string    `schema:"recipientCryptoId"`
 }
 

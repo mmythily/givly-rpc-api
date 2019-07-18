@@ -63,10 +63,9 @@ func (m MerchantHandler) handleCreateMerchant() http.HandlerFunc {
 	// Code here gets run one time when instance starts
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		fmt.Println(r.FormValue("Message"))
 		pbRequest := &merchantPb.CreateMerchantReq{
-			StoreEmail: "errora",
-			StoreName:  "",
+			StoreEmail: r.FormValue("storeEmail"),
+			StoreName:  r.FormValue("storeName"),
 		}
 
 		pbResponse, err := m.Client.CreateMerchant(context.Background(), pbRequest)

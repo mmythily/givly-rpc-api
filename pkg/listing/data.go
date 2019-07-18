@@ -1,13 +1,11 @@
 package listing
 
-import (
-	uuid "github.com/google/uuid"
-)
+
 
 // Merchant represents a member merchant
 // This is the data returned to the frontend client
 type Merchant struct {
-	MerchantUUID uuid.UUID `json:"merchantUuid"`
+	MerchantUUID string `json:"merchantUuid"`
 	StoreEmail   string    `json:"storeEmail"`
 	StoreName    string    `json:"storeName"`
 }
@@ -15,7 +13,7 @@ type Merchant struct {
 // Product represents one product in a transaction
 // This is the data recived from frontend client
 type Product struct {
-	ProductUUID uuid.UUID `json:"productUuid"`
+	ProductUUID string `json:"productUuid"`
 	ProductName string    `json:"productName"`
 	Price       float32   `json:"price"`
 }
@@ -23,16 +21,16 @@ type Product struct {
 // Transaction represents a sale transaction
 // This is the data recived from frontend client
 type Transaction struct {
-	TransactionUUID   uuid.UUID `json:"transactionUuid"`
+	TransactionUUID   string `json:"transactionUuid"`
 	Products          []Product `json:"products"`
 	TotalPrice        float32   `json:"totalPrice"`
-	MerchantUUID      uuid.UUID `json:"merchantUuid"`
+	MerchantUUID      string `json:"merchantUuid"`
 	RecipientCryptoID string    `json:"recipientCryptoId"`
 }
 
 // Item represents an item in available Items for purchase
 type Item struct {
-	ItemUUID uuid.UUID `json:"itemUuid"`
+	ItemUUID string `json:"itemUuid"`
 	ItemName string    `json:"itemName"`
 	ItemURL  string    `json:"itemUrl"`
 }
@@ -49,5 +47,5 @@ type RecipientReq struct {
 
 // MerchantReq representa a merchant
 type MerchantReq struct {
-	MerchantUUID uuid.UUID `schema:"merchantUuid"`
+	MerchantUUID string `schema:"merchantUuid"`
 }
