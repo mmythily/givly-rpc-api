@@ -3,8 +3,9 @@ package psql
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
 	uuid "github.com/google/uuid"
+	"github.com/jinzhu/gorm"
+
 	// Used by gorm
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -27,9 +28,9 @@ func (m *Merchant) BeforeCreate(scope *gorm.Scope) error {
 
 // Product represents one product in a transaction
 type Product struct {
-	ProductUUID uuid.UUID `gorm:"type:uuid;primary_key;"`
-	ProductName string    `gorm:"not null;unique_index"`
-	Price       float32   `gorm:"not null"`
+	ProductUUID     uuid.UUID `gorm:"type:uuid;primary_key;"`
+	ProductName     string    `gorm:"not null;unique_index"`
+	Price           float32   `gorm:"not null"`
 	TransactionUUID uuid.UUID `gorm:"not null"`
 }
 
@@ -42,11 +43,11 @@ func (p *Product) BeforeCreate(scope *gorm.Scope) error {
 // Transaction represents a sale transaction
 type Transaction struct {
 	TransactionUUID   uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Products          []Product	`gorm:"foreignkey:TransactionUUID"`
+	Products          []Product `gorm:"foreignkey:TransactionUUID"`
 	TotalPrice        float32   `gorm:"not null"`
 	MerchantUUID      uuid.UUID `gorm:"not null"`
 	RecipientCryptoID string    `gorm:"not null"`
-	CreatedAt        time.Time
+	CreatedAt         time.Time
 }
 
 // BeforeCreate will set a UUID rather than numeric ID.
@@ -70,6 +71,6 @@ func (i *Item) BeforeCreate(scope *gorm.Scope) error {
 
 // Recipient represents a beneficiary
 type Recipient struct {
-	RecipientCryptoID string `gorm:"primary_key;"`
+	RecipientCryptoID string        `gorm:"primary_key;"`
 	Transactions      []Transaction `gorm:"foreignkey:MerchantUUID"`
 }

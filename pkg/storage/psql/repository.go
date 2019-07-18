@@ -2,12 +2,13 @@ package psql
 
 import (
 	//"fmt"
+	uuid "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
+
 	// used by gorm
-  _ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
-	uuid "github.com/google/uuid"
 )
 
 // Storage represents a repository
@@ -16,7 +17,7 @@ type Storage struct {
 }
 
 // New creates a new repository with dependencies
-func New(connection string) (*Storage, error){
+func New(connection string) (*Storage, error) {
 	db, err := gorm.Open("postgres", connection)
 	if err != nil {
 		return nil, err
@@ -81,7 +82,6 @@ func (s *Storage) GetTxByRecipientCryptoID(transactionPb.TxByRecipientReq) (*tra
 func (s *Storage) GetTxByMerchantUUID(transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error) {
 	return nil, nil
 }
-
 
 /*
 	recipient := &Recipient{
