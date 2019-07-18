@@ -23,9 +23,18 @@ func New(connection string) (*Storage, error){
 	}
 	db.SingularTable(true)
 	db.LogMode(true)
+
 	return &Storage{
 		DB: db,
 	}, nil
+}
+
+// Migrate runs the Automigration on the DB
+func (s *Storage) Migrate() {
+	s.DB.AutoMigrate(&Merchant{}, &Product{}, &Transaction{}, &Item{}, &Recipient{})
+	s.DB.Model(&Product{}).AddForeignKey("transaction_uuid", "transaction(transaction_uuid)", "RESTRICT", "RESTRICT")
+	s.DB.Model(&Transaction{}).AddForeignKey("merchant_uuid", "merchant(merchant_uuid)", "RESTRICT", "RESTRICT")
+	s.DB.Model(&Transaction{}).AddForeignKey("recipient_crypto_id", "recipient(recipient_crypto_id)", "RESTRICT", "RESTRICT")
 }
 
 // Close closes the connection
@@ -73,3 +82,28 @@ func (s *Storage) GetTxByMerchantUUID(transactionPb.TxByMerchantReq) (*transacti
 	return nil, nil
 }
 
+
+/*
+	recipient := &Recipient{
+		RecipientCryptoID: "123",
+	}
+	db.Create(recipient)
+	product := &Product{
+		ProductName: "Bico",
+		Price: 55,
+	}
+	transaction := &Transaction{
+		Products: []Product{*product},
+		TotalPrice: 500,
+		RecipientCryptoID: "123",
+	}
+	merchant := &Merchant{
+		MerchantCryptoID: "123",
+		StoreEmail: "r@r.com",
+		StoreName: "Hasouna",
+		Transactions: []Transaction{*transaction},
+	}
+	muuid, _ := uuid.Parse("951e83aa-9dba-403a-b09e-6c0981f1ce52")
+	db.Create(transaction)
+	db.Create(merchant)
+*/
