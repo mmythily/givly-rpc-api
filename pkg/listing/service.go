@@ -63,10 +63,18 @@ func (s *service) GetItemList(req transactionPb.ItemListReq) (*transactionPb.Ite
 	return itemList, nil
 }
 
-func (s *service)GetRecipientTx(transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error){
-	return nil, nil
+func (s *service)GetRecipientTx(req transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error){
+	tx, err := s.repo.GetTxByRecipientCryptoID(req)
+	if err != nil {
+		return nil, err
+	}
+	return tx, nil
 }
 
 func (s *service) GetMerchantTx(req transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error){
-	return nil, nil
+	tx, err := s.repo.GetTxByMerchantUUID(req)
+	if err != nil {
+		return nil, err
+	}
+	return tx, nil
 }

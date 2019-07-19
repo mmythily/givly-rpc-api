@@ -88,7 +88,11 @@ func (t *TransactionDirectory) GetRecipientTx(ctx context.Context, req *transact
 		Gets all transactions from DB related to one recipient.
 		formats the response for client
 	*/
-	return nil, nil
+	tx, err := t.L.GetRecipientTx(*req)
+	if err != nil {
+		return nil, err
+	}
+	return tx, nil
 }
 
 // GetMerchantTx gets transactions by a specific merchant
@@ -97,5 +101,9 @@ func (t *TransactionDirectory) GetMerchantTx(ctx context.Context, req *transacti
 		Gets all transactions from DB related to one merchant.
 		formats the response for client
 	*/
-	return nil, nil
+	tx, err := t.L.GetMerchantTx(*req)
+	if err != nil {
+		return nil, err
+	}
+	return tx, nil
 }

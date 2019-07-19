@@ -56,6 +56,9 @@ type Transaction struct {
 	CreatedAt         time.Time
 }
 
+// Transactions represent a transaction query
+type Transactions []Transaction
+
 // BeforeCreate will set a UUID rather than numeric ID.
 func (t *Transaction) BeforeCreate(scope *gorm.Scope) error {
 	uuid := getMD5Hash()

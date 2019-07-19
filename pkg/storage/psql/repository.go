@@ -147,12 +147,54 @@ func (s *Storage) AddTransaction(req transactionPb.SubmitTxReq) (*transactionPb.
 
 // GetTxByRecipientCryptoID gets transactions for a recipient by crypto id
 func (s *Storage) GetTxByRecipientCryptoID(req transactionPb.TxByRecipientReq) (*transactionPb.TxRes, error) {
-	return nil, nil
+	recipientCryptoID := req.RecipientCryptoId
+	var transactions []Transaction
+	err := s.DB.Where(&Transaction{
+		RecipientCryptoID: recipientCryptoID,
+	}).Find(&transactions).Error
+	if err != nil {
+		return nil, err
+	}
+	var pbTransactions []*transactionPb.Transaction
+
+	for _, t := range transactions {
+		timeStamp, _ := ptypes.TimestampProto(t.CreatedAt)
+		pbTransactions = append(pbTransactions, &transactionPb.Transaction {
+			TransactionUuid: t.TransactionUUID,
+			TotalPrice: t.TotalPrice,
+			MerchantUuid: t.MerchantUUID,
+			CreatedAt: timeStamp,
+		})
+	}
+	return &transactionPb.TxRes{
+		TransactionList: pbTransactions,
+	}, nil
 }
 
 // GetTxByMerchantUUID gets transactions for a merchant by crypto id
 func (s *Storage) GetTxByMerchantUUID(req transactionPb.TxByMerchantReq) (*transactionPb.TxRes, error) {
-	return nil, nil
+	merchantUUID := req.MerchantUuid
+	var transactions []Transaction
+	err := s.DB.Where(&Transaction{
+		MerchantUUID: merchantUUID,
+	}).Find(&transactions).Error
+	if err != nil {
+		return nil, err
+	}
+	var pbTransactions []*transactionPb.Transaction
+
+	for _, t := range transactions {
+		timeStamp, _ := ptypes.TimestampProto(t.CreatedAt)
+		pbTransactions = append(pbTransactions, &transactionPb.Transaction {
+			TransactionUuid: t.TransactionUUID,
+			TotalPrice: t.TotalPrice,
+			RecipientCryptoId: t.RecipientCryptoID,
+			CreatedAt: timeStamp,
+		})
+	}
+	return &transactionPb.TxRes{
+		TransactionList: pbTransactions,
+	}, nil
 }
 
 /*

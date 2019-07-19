@@ -145,18 +145,34 @@ func submitTx(r *http.Request, pb transactionPb.TransactionService) (proto.Messa
 
 // getRecipientTx gets transactions by a specific recipient
 func getRecipientTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	r.ParseForm()
+	recipientCryptoID := r.FormValue("recipientCryptoId")
 	// Create protobuf request
+	pbRequest := &transactionPb.TxByRecipientReq{
+		RecipientCryptoId: recipientCryptoID,
+	}
 	// Call RPC function and get protobuf response
-	// Marshall the response
+	pbResponse, err := pb.GetRecipientTx(context.Background(), pbRequest)
+	if err != nil {
+		return nil, err
+	}
 	// Send back to Client
-	return nil, nil
+	return pbResponse, nil
 }
 
 // getMerchantTx gets transactions by a specific merchant
 func getMerchantTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	r.ParseForm()
+	merchantUUID := r.FormValue("merchantUuid")
 	// Create protobuf request
+	pbRequest := &transactionPb.TxByMerchantReq{
+		MerchantUuid: merchantUUID,
+	}
 	// Call RPC function and get protobuf response
-	// Marshall the response
+	pbResponse, err := pb.GetMerchantTx(context.Background(), pbRequest)
+	if err != nil {
+		return nil, err
+	}
 	// Send back to Client
-	return nil, nil
+	return pbResponse, nil
 }
