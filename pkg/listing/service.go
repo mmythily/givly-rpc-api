@@ -14,6 +14,7 @@ import (
 // Service calles storage(db) layer with Data type entity
 type Service interface {
 	// GetBalanceByCryptoId on Recipient db Model
+	// Wait until confirming Crypto endpoint
 	GetRecipientBalance(merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error)
 	// GetItemList on the ItemList db model
 	GetItemList(transactionPb.ItemListReq) (*transactionPb.ItemList, error)

@@ -35,7 +35,7 @@ func (m *Merchant) BeforeCreate(scope *gorm.Scope) error {
 // Product represents one product in a transaction
 type Product struct {
 	ProductUUID     string  `gorm:"primary_key;"`
-	ProductName     string  `gorm:"not null;unique_index"`
+	ProductName     string  `gorm:"not null"`
 	Price           float32 `gorm:"not null"`
 	TransactionUUID string  `gorm:"not null"`
 }

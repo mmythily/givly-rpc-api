@@ -41,8 +41,10 @@ message Transaction {
   string recipientCryptoId = 3;
   // List of products in transaction
   repeated Product products = 4;
+  // Total price of products
+  float totalPrice = 5;
   // Time of transaction creating
-  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp createdAt = 6;
 }
 
 // Gets a list of available items for sale

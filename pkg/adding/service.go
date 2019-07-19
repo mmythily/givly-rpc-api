@@ -72,5 +72,9 @@ func (s *service) CreateItems(req transactionPb.ItemList) (*transactionPb.ItemLi
 }
 
 func (s *service) SubmitTx(req transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {
-	return nil, nil
+	transaction, err := s.repo.AddTransaction(req)
+	if err != nil {
+		return nil, err
+	}
+	return transaction, nil
 }

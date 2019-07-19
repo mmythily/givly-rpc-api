@@ -70,11 +70,16 @@ func (t *TransactionDirectory) CreateItems(ctx context.Context, req *transaction
 // SubmitTx commits the transaction to the database
 func (t *TransactionDirectory) SubmitTx(ctx context.Context, req *transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {
 	/*
-		Saves the transaction only if it has the reviewed flag
-		Time limit of 1 minute after the reviewd flag is checked to true
-		Returns an error if time increases above limit
+	Hit crypto endpoint to validate the total price vs recipient balance
+	Hit crypto endpoint to store transaction
+	Save transaction in Local db
+	Return success
 	*/
-	return nil, nil
+	submittedTransaction, err := t.A.SubmitTx(*req)
+	if err != nil {
+		return nil, err
+	}
+	return submittedTransaction, nil
 }
 
 // GetRecipientTx gets transactions by a specific recipient

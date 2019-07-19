@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/jinzhu/gorm"
-
+	"errors"
 	// used by gorm
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
@@ -96,13 +96,53 @@ func (s *Storage) GetItemList(req transactionPb.ItemListReq) (*transactionPb.Ite
 }
 
 // GetBalanceByCryptoID gets balance of recipient
+// OnHold until confirming crypto endpoint
 func (s *Storage) GetBalanceByCryptoID(req merchantPb.RecipientBalanceReq) (*merchantPb.RecipientBalance, error) {
 	return nil, nil
 }
 
 // AddTransaction adds a new transaction with uuid signals success
 func (s *Storage) AddTransaction(req transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {
-	return nil, nil
+	var products []Product
+	var sum float32
+	for _, product := range req.Transaction.Products {
+		products = append(products, Product{
+			ProductName: product.ProductName,
+			Price: product.Price,
+		})
+		sum = sum + product.Price
+	}
+	if req.Transaction.TotalPrice != sum {
+		return nil, errors.New("Transaction error")
+	}
+	txToSubmit := Transaction {
+		Products: products,
+		TotalPrice: req.Transaction.TotalPrice,
+		MerchantUUID: req.Transaction.MerchantUuid,
+		RecipientCryptoID: req.Transaction.RecipientCryptoId,
+	}
+	err := s.DB.Create(&txToSubmit).Error
+	if err != nil {
+		return nil, err
+	}
+	timeStamp, _ := ptypes.TimestampProto(txToSubmit.CreatedAt)
+	var pbProducts []*transactionPb.Product
+	for _, txproduct := range txToSubmit.Products {
+		pbProducts = append(pbProducts, &transactionPb.Product{
+			ProductUuid: txproduct.ProductUUID,
+			Price: txproduct.Price,
+			ProductName: txproduct.ProductName,
+		})
+	}
+	pbTx := transactionPb.Transaction {
+		TransactionUuid: txToSubmit.TransactionUUID,
+		Products: pbProducts,
+		TotalPrice: txToSubmit.TotalPrice,
+		MerchantUuid: txToSubmit.MerchantUUID,
+		RecipientCryptoId: txToSubmit.RecipientCryptoID,
+		CreatedAt: timeStamp,
+	}
+	return &pbTx, nil
 }
 
 // GetTxByRecipientCryptoID gets transactions for a recipient by crypto id

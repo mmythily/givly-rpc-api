@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
 	"github.com/golang/protobuf/proto"
 	"github.com/gorilla/mux"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
@@ -109,11 +108,39 @@ func createItems(r *http.Request, pb transactionPb.TransactionService) (proto.Me
 
 // submitTx submits transation to blockchain endpoint
 func submitTx(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Parse incoming JSON
+	if err := r.ParseForm(); err != nil {
+		fmt.Println(err)
+	}
+	// Marshall JSON request
+	var newTransaction Transaction
+	err := json.Unmarshal([]byte(r.FormValue("transaction")), &newTransaction)
+	if err != nil {
+		return nil, err
+	}
+	var txProducts []*transactionPb.Product
+	for _, product := range newTransaction.Products {
+		txProducts = append(txProducts, &transactionPb.Product{
+			ProductName: product.ProductName,
+			Price: product.Price,
+		})
+	}
 	// Create protobuf request
+	pbRequest := transactionPb.Transaction{
+		TotalPrice: newTransaction.TotalPrice,
+		MerchantUuid: newTransaction.MerchantUUID,
+		RecipientCryptoId: newTransaction.RecipientCryptoID,
+		Products: txProducts,
+	}
 	// Call RPC function and get protobuf response
-	// Marshall the response
-	// Send back to Client
-	return nil, nil
+	pbResponse, err := pb.SubmitTx(context.Background(), &transactionPb.SubmitTxReq{
+		Transaction: &pbRequest,
+	})
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(pbResponse)
+	return pbResponse, nil
 }
 
 // getRecipientTx gets transactions by a specific recipient

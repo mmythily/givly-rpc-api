@@ -68,10 +68,8 @@ func (m *MerchantDirectory) GetRecipientBalance(ctx context.Context, req *mercha
 		Hits endpoint for recipient wallet
 		Returns false if recipient doesnt exit or balance amount
 	*/
-
-	// return &merchantPb.RecipientBalance{
-	// 	Balance: 100,
-	// }, nil
-	return nil, nil
+	return &merchantPb.RecipientBalance{
+		Balance: 100,
+	}, nil
 }
 
