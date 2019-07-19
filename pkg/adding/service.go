@@ -64,7 +64,11 @@ func (s *service) CreateMerchant(req merchantPb.CreateMerchantReq) (*merchantPb.
 }
 
 func (s *service) CreateItems(req transactionPb.ItemList) (*transactionPb.ItemList, error) {
-	return nil, nil
+	items, err := s.repo.AddItems(req)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 func (s *service) SubmitTx(req transactionPb.SubmitTxReq) (*transactionPb.Transaction, error) {

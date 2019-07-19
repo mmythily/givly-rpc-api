@@ -3,9 +3,11 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"github.com/gorilla/mux"
+
 	"github.com/golang/protobuf/proto"
+	"github.com/gorilla/mux"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
 )
 
@@ -37,7 +39,7 @@ func (t TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // route Mounts the transaction handlers on Router
 func (t TransactionHandler) route() {
 	t.Router.HandleFunc("/getItemList", t.respond(getItemList, handleError)).Methods("POST")
-	t.Router.HandleFunc("/createItemList", t.respond(createItems, handleError)).Methods("POST")
+	t.Router.HandleFunc("/addItems", t.respond(createItems, handleError)).Methods("POST")
 	t.Router.HandleFunc("/submitTx", t.respond(submitTx, handleError)).Methods("POST")
 	t.Router.HandleFunc("/getTxByRecipient", t.respond(getRecipientTx, handleError)).Methods("POST")
 	t.Router.HandleFunc("/getTxByMerchant", t.respond(getMerchantTx, handleError)).Methods("POST")
@@ -61,6 +63,9 @@ func (t *TransactionHandler) respond(process txRPCProcessor, format errFormater)
 	}
 }
 
+/*
+	txRPCProcessors definitions
+*/
 
 // getItemList retrieves a list of eligible products
 func getItemList(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
@@ -74,11 +79,32 @@ func getItemList(r *http.Request, pb transactionPb.TransactionService) (proto.Me
 
 // createItems submits transation to blockchain endpoint
 func createItems(r *http.Request, pb transactionPb.TransactionService) (proto.Message, error) {
+	// Parse incoming JSON
+	if err := r.ParseForm(); err != nil {
+		fmt.Println(err)
+	}
+	// Marshall JSON request
+	var items Items
+	err := json.Unmarshal([]byte(r.FormValue("itemList")), &items)
+	if err != nil {
+		return nil, err
+	}
 	// Create protobuf request
+	pbRequest := &transactionPb.ItemList{
+		SaleItems: []*transactionPb.SaleItem{},
+	}
+	for _, item := range items.ItemList {
+		pbRequest.SaleItems = append(pbRequest.SaleItems, &transactionPb.SaleItem{
+			ItemName:  item.ItemName,
+			ItemThumb: item.ItemURL,
+		})
+	}
 	// Call RPC function and get protobuf response
-	// Marshall the response
-	// Send back to Client
-	return nil, nil
+	pbResponse, err := pb.CreateItems(context.Background(), pbRequest)
+	if err != nil {
+		return nil, err
+	}
+	return pbResponse, nil
 }
 
 // submitTx submits transation to blockchain endpoint

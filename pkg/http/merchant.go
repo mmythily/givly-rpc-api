@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"errors"
+	//"errors"
 	merchantPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/merchant"
 	"github.com/rumsrami/givly-rpc-api/pkg/adding"
 	"github.com/rumsrami/givly-rpc-api/pkg/listing"
@@ -72,6 +72,6 @@ func (m *MerchantDirectory) GetRecipientBalance(ctx context.Context, req *mercha
 	// return &merchantPb.RecipientBalance{
 	// 	Balance: 100,
 	// }, nil
-	return nil, errors.New("Not working")
+	return nil, nil
 }
 

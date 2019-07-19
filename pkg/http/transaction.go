@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"errors"
 	"github.com/rumsrami/givly-rpc-api/pkg/adding"
 	"github.com/rumsrami/givly-rpc-api/pkg/listing"
 	transactionPb "github.com/rumsrami/givly-rpc-api/pkg/rpc/transaction"
@@ -32,7 +31,7 @@ func NewTransactionDirectory(a adding.Service, l listing.Service) *TransactionDi
 // GetItemList gets list of all available products in db
 func (t *TransactionDirectory) GetItemList(ctx context.Context, req *transactionPb.ItemListReq) (*transactionPb.ItemList, error) {
 	/*
-		For demo purpose, hits the db directly and gets back the list of essential
+		For demo purpose, hits the db and gets back the list of essential
 		products, it is up to the merchant to price them as he wishes
 	*/
 	// itemList := &transactionPb.ItemList{
@@ -42,7 +41,10 @@ func (t *TransactionDirectory) GetItemList(ctx context.Context, req *transaction
 	// 		},
 	// 	},
 	// }
-	items, _ := t.L.GetItemList(transactionPb.ItemListReq{})
+	items, err := t.L.GetItemList(*req)
+	if err != nil {
+		return nil, err
+	}
 	return items, nil
 }
 // CreateItems adds to the list of available products in the item list
@@ -58,7 +60,11 @@ func (t *TransactionDirectory) CreateItems(ctx context.Context, req *transaction
 	// 		},
 	// 	},
 	// }
-	return nil, errors.New("List empty")
+	items, err := t.A.CreateItems(*req)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 // SubmitTx commits the transaction to the database

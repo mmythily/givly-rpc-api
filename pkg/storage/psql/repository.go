@@ -64,12 +64,22 @@ func (s *Storage) AddMerchant(req merchantPb.CreateMerchantReq) (*merchantPb.Mer
 
 // AddItems adds a list of available items
 func (s *Storage) AddItems(req transactionPb.ItemList) (*transactionPb.ItemList, error) {
-	return nil, nil
+	fmt.Println(req)
+	for _, item := range req.SaleItems {
+		dbItem := Item{
+			ItemName: item.ItemName,
+			ItemURL: item.ItemThumb,
+		}
+		if err := s.DB.Create(&dbItem).Error; err != nil {
+			return nil, err
+		}
+	}
+	return &req, nil
 }
 
 // GetItemList gets a list of available items
 func (s *Storage) GetItemList(req transactionPb.ItemListReq) (*transactionPb.ItemList, error) {
-	items := Items{}
+	var items Items
 	if err := s.DB.Find(&items).Error; err != nil {
 		return nil, err
 	}
@@ -82,7 +92,6 @@ func (s *Storage) GetItemList(req transactionPb.ItemListReq) (*transactionPb.Ite
 		}
 		pbItems.SaleItems = append(pbItems.SaleItems, &saleItem)
 	}
-	fmt.Println(items)
 	return &pbItems, nil
 }
 
